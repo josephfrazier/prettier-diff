@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "^0.22.0"
+  }
 }
