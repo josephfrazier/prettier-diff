@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "git difftool for semantic JavaScript diffs",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
   "license": "MIT",
