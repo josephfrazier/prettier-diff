@@ -1,6 +1,5 @@
 # TODO
 
-* Determine whether `--ignore-blank-lines --ignore-all-space` is ... actually safe
 * Support non-git usage?
 * Use diff-so-fancy? https://github.com/so-fancy/diff-so-fancy
 * Consider handling JSON diffs: see https://github.com/prettier/prettier/issues/322
