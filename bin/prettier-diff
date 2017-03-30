@@ -4,14 +4,13 @@ const fs = require('fs');
 const child_process = require('child_process');
 const prettierDiff = require('../');
 const tempfile = require('tempfile');
-const diff = require('diff');
 
 const [fromPath, toPath] = process.argv.slice(2);
 
 const fromContent = fs.readFileSync(fromPath).toString();
 const toContent = fs.readFileSync(toPath).toString();
 
-const { fromPretty, toPretty, patch } = prettierDiff({
+const { fromPretty, toPretty } = prettierDiff({
   fromPath,
   toPath,
   fromContent,
