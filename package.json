@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "git difftool for semantic JavaScript diffs",
   "main": "index.js",
+  "bin": "bin/prettier-diff",
   "files": [
+    "bin/prettier-diff",
     "index.js"
   ],
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
