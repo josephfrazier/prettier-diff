@@ -8,6 +8,9 @@
     "bin/prettier-diff",
     "index.js"
   ],
+  "scripts": {
+    "format": "prettier --single-quote --trailing-comma es5 --write index.js bin/prettier-diff"
+  },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
   "license": "MIT",
