@@ -29,14 +29,12 @@ fs.writeFileSync(toTmp, toPretty);
 const fromPathClean = process.env.BASE || fromPath;
 const toPathClean = process.env.BASE || toPath;
 
-// TODO handle git difftool usage better
-// That is, don't show `renamed: bin/prettier-diff to bin/prettier-diff`
-// It might be easier to process diff output before diff-so-fancy.
-const sedCommand = `sed -e 's#renamed: ${escapeStringRegexp(fromTmp.slice(1))} to ${escapeStringRegexp(toTmp.slice(1))}#renamed: ${fromPathClean} to ${toPathClean}#'`;
+// TODO dedupe/simplify sed stuff below. Maybe even capture git-diff output and process it in JS instead?
 const command = shell`\
   git diff --color --no-index ${fromTmp} ${toTmp} \
+  | ${shell.preserve(`sed -e 's#--- a${escapeStringRegexp(fromTmp)}#--- a/${escapeStringRegexp(fromPathClean)}#'`)} \
+  | ${shell.preserve(`sed -e 's#\+\+\+ b${escapeStringRegexp(toTmp)}#\+\+\+ a/${escapeStringRegexp(toPathClean)}#'`)} \
   | ${__dirname}/../node_modules/.bin/diff-so-fancy \
-  | ${shell.preserve(sedCommand)} \
   | less --tabs=2 -RFX
 `;
 try {
