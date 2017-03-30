@@ -23,7 +23,7 @@ const [fromTmp, toTmp] = [tempfile(), tempfile()];
 fs.writeFileSync(fromTmp, fromPretty);
 fs.writeFileSync(toTmp, toPretty);
 
-const command = `git diff --color-words --no-index "${fromTmp}" "${toTmp}"`;
+const command = `git diff --ignore-blank-lines --ignore-all-space --color-words --no-index "${fromTmp}" "${toTmp}"`;
 try {
   child_process.execSync(command, {
     stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
