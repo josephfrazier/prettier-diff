@@ -29,5 +29,8 @@ try {
     stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
   });
 } catch (err) {
-  process.exit(err.status);
+  process.exitCode = err.status;
 }
+
+fs.unlinkSync(fromTmp);
+fs.unlinkSync(toTmp);
