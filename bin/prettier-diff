@@ -26,6 +26,7 @@ fs.writeFileSync(toTmp, toPretty);
 // Use `|| true` to eat failures.
 // Don't use `| cat` because we want git diff colors to work if they are configured.
 // https://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program/255212#255212
-child_process.execSync(`git diff --no-index "${fromTmp}" "${toTmp}" || true`, {
+const command = `git diff --no-index "${fromTmp}" "${toTmp}" || true`;
+child_process.execSync(command, {
   stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
 });
