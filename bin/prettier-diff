@@ -4,6 +4,7 @@ const fs = require('fs');
 const child_process = require('child_process');
 const prettierDiff = require('../');
 const tempfile = require('tempfile');
+const shell = require('shell-escape-tag').default;
 
 const [fromPath, toPath] = process.argv.slice(2);
 
@@ -22,7 +23,7 @@ const [fromTmp, toTmp] = [tempfile(), tempfile()];
 fs.writeFileSync(fromTmp, fromPretty);
 fs.writeFileSync(toTmp, toPretty);
 
-const command = `git diff --color --no-index "${fromTmp}" "${toTmp}" | ${__dirname}/../node_modules/.bin/diff-so-fancy | less --tabs=2 -RFX`;
+const command = shell`git diff --color --no-index ${fromTmp} ${toTmp} | ${__dirname}/../node_modules/.bin/diff-so-fancy | less --tabs=2 -RFX`;
 try {
   child_process.execSync(command, {
     stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
