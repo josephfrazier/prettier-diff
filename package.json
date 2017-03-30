@@ -9,6 +9,7 @@
     "index.js"
   ],
   "scripts": {
+    "test": "test/test.sh",
     "format": "prettier --single-quote --trailing-comma es5 --write index.js bin/prettier-diff"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
@@ -20,6 +21,6 @@
     "tempfile": "^2.0.0"
   },
   "devDependencies": {
-    "uglify-js": "https://github.com/mishoo/UglifyJS2#harmony"
+    "uglify-js-harmony": "^2.7.5"
   }
 }

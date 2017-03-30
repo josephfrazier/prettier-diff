@@ -37,5 +37,5 @@ module.exports = function(
     toPretty
   );
 
-  return { fromPretty, toPretty, patch };
+  return { fromPretty: fromPretty, toPretty: toPretty, patch: patch };
 };
