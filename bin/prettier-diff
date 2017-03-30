@@ -24,8 +24,15 @@ const [fromTmp, toTmp] = [tempfile(), tempfile()];
 fs.writeFileSync(fromTmp, fromPretty);
 fs.writeFileSync(toTmp, toPretty);
 
-// TODO handle git difftool usage (might be easier to process diff before diff-so-fancy)
-const sedCommand = `sed -e 's#renamed: ${escapeStringRegexp(fromTmp.slice(1))} to ${escapeStringRegexp(toTmp.slice(1))}#renamed: ${fromPath} to ${toPath}#'`;
+// If process.env.BASE is present, we're running as a git difftool,
+// so use the correct paths. See https://git-scm.com/docs/git-difftool
+const fromPathClean = process.env.BASE || fromPath;
+const toPathClean = process.env.BASE || toPath;
+
+// TODO handle git difftool usage better
+// That is, don't show `renamed: bin/prettier-diff to bin/prettier-diff`
+// It might be easier to process diff output before diff-so-fancy.
+const sedCommand = `sed -e 's#renamed: ${escapeStringRegexp(fromTmp.slice(1))} to ${escapeStringRegexp(toTmp.slice(1))}#renamed: ${fromPathClean} to ${toPathClean}#'`;
 const command = shell`\
   git diff --color --no-index ${fromTmp} ${toTmp} \
   | ${__dirname}/../node_modules/.bin/diff-so-fancy \
