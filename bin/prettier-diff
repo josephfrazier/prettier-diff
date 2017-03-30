@@ -23,9 +23,13 @@ const [fromTmp, toTmp] = [tempfile(), tempfile()];
 fs.writeFileSync(fromTmp, fromPretty);
 fs.writeFileSync(toTmp, toPretty);
 
+// TODO use escape-string-regexp
+// TODO handle git difftool usage (might be easier to process diff before diff-so-fancy)
+const sedCommand = `sed -e 's#renamed: ${fromTmp.slice(1)} to ${toTmp.slice(1)}#renamed: ${fromPath} to ${toPath}#'`;
 const command = shell`\
   git diff --color --no-index ${fromTmp} ${toTmp} \
   | ${__dirname}/../node_modules/.bin/diff-so-fancy \
+  | ${shell.preserve(sedCommand)} \
   | less --tabs=2 -RFX
 `;
 try {
