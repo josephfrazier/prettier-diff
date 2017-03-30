@@ -24,6 +24,10 @@ fs.writeFileSync(fromTmp, fromPretty);
 fs.writeFileSync(toTmp, toPretty);
 
 const command = `git diff --color-words --no-index "${fromTmp}" "${toTmp}"`;
-child_process.execSync(command, {
-  stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
-});
+try {
+  child_process.execSync(command, {
+    stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
+  });
+} catch (err) {
+  process.exit(err.status);
+}
