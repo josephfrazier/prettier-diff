@@ -40,11 +40,10 @@ try {
     | less --tabs=2 -RFX
   `;
 
-  const fancyOutput = child_process
-    .execSync(command, { input: diffOutput })
-    .toString();
-
-  process.stdout.write(fancyOutput);
+  child_process.execSync(command, {
+    input: diffOutput,
+    stdio: ['pipe', 'inherit', 'inherit'],
+  });
 } catch (err) {
   process.exitCode = err.status;
 }
