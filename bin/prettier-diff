@@ -5,7 +5,6 @@ const child_process = require('child_process');
 const prettierDiff = require('../');
 const tempfile = require('tempfile');
 const shell = require('shell-escape-tag').default;
-const escapeStringRegexp = require('escape-string-regexp');
 
 const [fromPath, toPath] = process.argv.slice(2);
 
@@ -30,17 +29,22 @@ const fromPathClean = process.env.BASE || fromPath;
 const toPathClean = process.env.BASE || toPath;
 
 try {
-  // TODO dedupe/simplify sed stuff below. Maybe even capture git-diff output and process it in JS instead?
+  const diffOutput = child_process
+    .execSync(shell`git diff --color --no-index ${fromTmp} ${toTmp} | cat`)
+    .toString()
+    .replace(`--- a${fromTmp}`, `--- a/${fromPathClean}`)
+    .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`);
+
   const command = shell`\
-    git diff --color --no-index ${fromTmp} ${toTmp} \
-    | ${shell.preserve(`sed -e 's#--- a${escapeStringRegexp(fromTmp)}#--- a/${escapeStringRegexp(fromPathClean)}#'`)} \
-    | ${shell.preserve(`sed -e 's#\+\+\+ b${escapeStringRegexp(toTmp)}#\+\+\+ a/${escapeStringRegexp(toPathClean)}#'`)} \
-    | ${__dirname}/../node_modules/.bin/diff-so-fancy \
+    ${__dirname}/../node_modules/.bin/diff-so-fancy \
     | less --tabs=2 -RFX
   `;
-  child_process.execSync(command, {
-    stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
-  });
+
+  const fancyOutput = child_process
+    .execSync(command, { input: diffOutput })
+    .toString();
+
+  process.stdout.write(fancyOutput);
 } catch (err) {
   process.exitCode = err.status;
 }
