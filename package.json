@@ -22,7 +22,8 @@
     "json-stable-stringify": "^1.0.1",
     "prettier": "^0.22.0",
     "shell-escape-tag": "^1.1.0",
-    "tempfile": "^2.0.0"
+    "tempfile": "^2.0.0",
+    "yargs": "^7.0.2"
   },
   "devDependencies": {
     "uglify-js-harmony": "^2.7.5"
