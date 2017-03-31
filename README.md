@@ -1,10 +1,13 @@
 # prettier-diff
 
-`prettier-diff` is a wrapper around [diff-so-fancy] that preprocesses JavaScript files with [prettier] to reduce the number of formatting changes that appear in the diff.
+`prettier-diff` is a wrapper around [diff-so-fancy] that preprocesses JavaScript and JSON files to reduce the number of formatting changes that appear in the diff.
 This allows you to focus on the semantic changes, which is useful when viewing diffs that also have formatting changes.
+
+JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-stable-stringify].
 
 [diff-so-fancy]: https://github.com/so-fancy/diff-so-fancy
 [prettier]: https://github.com/prettier/prettier
+[json-stable-stringify]: https://github.com/substack/json-stable-stringify
 
 ## Install
 
