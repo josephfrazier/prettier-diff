@@ -29,15 +29,15 @@ fs.writeFileSync(toTmp, toPretty);
 const fromPathClean = process.env.BASE || fromPath;
 const toPathClean = process.env.BASE || toPath;
 
-// TODO dedupe/simplify sed stuff below. Maybe even capture git-diff output and process it in JS instead?
-const command = shell`\
-  git diff --color --no-index ${fromTmp} ${toTmp} \
-  | ${shell.preserve(`sed -e 's#--- a${escapeStringRegexp(fromTmp)}#--- a/${escapeStringRegexp(fromPathClean)}#'`)} \
-  | ${shell.preserve(`sed -e 's#\+\+\+ b${escapeStringRegexp(toTmp)}#\+\+\+ a/${escapeStringRegexp(toPathClean)}#'`)} \
-  | ${__dirname}/../node_modules/.bin/diff-so-fancy \
-  | less --tabs=2 -RFX
-`;
 try {
+  // TODO dedupe/simplify sed stuff below. Maybe even capture git-diff output and process it in JS instead?
+  const command = shell`\
+    git diff --color --no-index ${fromTmp} ${toTmp} \
+    | ${shell.preserve(`sed -e 's#--- a${escapeStringRegexp(fromTmp)}#--- a/${escapeStringRegexp(fromPathClean)}#'`)} \
+    | ${shell.preserve(`sed -e 's#\+\+\+ b${escapeStringRegexp(toTmp)}#\+\+\+ a/${escapeStringRegexp(toPathClean)}#'`)} \
+    | ${__dirname}/../node_modules/.bin/diff-so-fancy \
+    | less --tabs=2 -RFX
+  `;
   child_process.execSync(command, {
     stdio: 'inherit', // https://stackoverflow.com/questions/30134236/use-child-process-execsync-but-keep-output-in-console#comment61502598_31104898
   });
