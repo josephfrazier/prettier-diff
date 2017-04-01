@@ -47,5 +47,8 @@ module.exports = function(
 };
 
 function jsonPrettify(jsonString) {
-  return stringify(JSON.parse(jsonString), { space: 2 });
+  const sorted = stringify(JSON.parse(jsonString), { space: 2 });
+  // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
+  // `null` at the end of a line. See the grammar at http://json.org/
+  return sorted.replace(/(["\d}\]el])$/gm, '$1,');
 }
