@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const isPathGlobal = require('is-path-global');
+const path = require('path');
 const yargs = require('yargs');
 const fs = require('fs');
 const child_process = require('child_process');
@@ -7,13 +9,23 @@ const prettierDiff = require('../');
 const tempfile = require('tempfile');
 const shell = require('shell-escape-tag').default;
 
+// yargs shows the full path to binaries that are in $PATH,
+// so work around that by substituting the basename if possible.
+// See https://github.com/yargs/yargs/issues/538
+let scriptName = process.argv[1];
+if (isPathGlobal(scriptName)) {
+  scriptName = path.basename(scriptName);
+} else {
+  scriptName = '$0';
+}
+
 const [fromPath, toPath] = yargs
   .help()
   .version()
-  .usage('Usage: $0 <path> <path>')
-  .example('$0 test/js.js test/js.js.uglified')
-  .example('$0 test/json.json test/json.json.uglified')
-  .example('git difftool --extcmd=$0')
+  .usage(`Usage: ${scriptName} <path> <path>`)
+  .example(`${scriptName} test/js.js test/js.js.uglified`)
+  .example(`${scriptName} test/json.json test/json.json.uglified`)
+  .example(`git difftool --extcmd=${scriptName}`)
   .demandCommand(
     2,
     2,
