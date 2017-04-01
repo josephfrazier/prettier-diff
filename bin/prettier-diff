@@ -11,8 +11,8 @@ const shell = require('shell-escape-tag').default;
 
 const [fromPath, toPath] = parseArgs();
 
-const fromContent = fs.readFileSync(fromPath).toString();
-const toContent = fs.readFileSync(toPath).toString();
+const fromContent = fs.readFileSync(fromPath);
+const toContent = fs.readFileSync(toPath);
 
 const { fromPretty, toPretty } = prettierDiff({
   fromPath,

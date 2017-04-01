@@ -20,6 +20,9 @@ module.exports = function(
     prettierOptions = defaultPrettierOptions,
   }
 ) {
+  fromContent = fromContent.toString();
+  toContent = toContent.toString();
+
   let fromPretty = fromContent;
   let toPretty = toContent;
 
