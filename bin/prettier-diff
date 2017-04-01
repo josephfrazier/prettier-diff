@@ -9,29 +9,7 @@ const prettierDiff = require('../');
 const tempfile = require('tempfile');
 const shell = require('shell-escape-tag').default;
 
-// yargs shows the full path to binaries that are in $PATH,
-// so work around that by substituting the basename if possible.
-// See https://github.com/yargs/yargs/issues/538
-let scriptName = process.argv[1];
-if (isPathGlobal(scriptName)) {
-  scriptName = path.basename(scriptName);
-} else {
-  scriptName = '$0';
-}
-
-const [fromPath, toPath] = yargs
-  .help()
-  .version()
-  .usage(`Usage: ${scriptName} <path> <path>`)
-  .example(`${scriptName} test/js.js test/js.js.uglified`)
-  .example(`${scriptName} test/json.json test/json.json.uglified`)
-  .example(`git difftool --extcmd=${scriptName}`)
-  .demandCommand(
-    2,
-    2,
-    'Not enough arguments: got $0, need exactly 2',
-    'Too many arguments: got $0, need exactly 2'
-  ).argv._;
+const [fromPath, toPath] = parseArgs();
 
 const fromContent = fs.readFileSync(fromPath).toString();
 const toContent = fs.readFileSync(toPath).toString();
@@ -75,3 +53,29 @@ try {
 
 fs.unlinkSync(fromTmp);
 fs.unlinkSync(toTmp);
+
+function parseArgs() {
+  // yargs shows the full path to binaries that are in $PATH,
+  // so work around that by substituting the basename if possible.
+  // See https://github.com/yargs/yargs/issues/538
+  let scriptName = process.argv[1];
+  if (isPathGlobal(scriptName)) {
+    scriptName = path.basename(scriptName);
+  } else {
+    scriptName = '$0';
+  }
+
+  return yargs
+    .help()
+    .version()
+    .usage(`Usage: ${scriptName} <path> <path>`)
+    .example(`${scriptName} test/js.js test/js.js.uglified`)
+    .example(`${scriptName} test/json.json test/json.json.uglified`)
+    .example(`git difftool --extcmd=${scriptName}`)
+    .demandCommand(
+      2,
+      2,
+      'Not enough arguments: got $0, need exactly 2',
+      'Too many arguments: got $0, need exactly 2'
+    ).argv._;
+}
