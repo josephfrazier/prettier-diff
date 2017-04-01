@@ -26,7 +26,5 @@
     "tempfile": "^2.0.0",
     "yargs": "^7.0.2"
   },
-  "devDependencies": {
-    "uglify-js-harmony": "^2.7.5"
-  }
+  "devDependencies": {}
 }
