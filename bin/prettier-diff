@@ -1,12 +1,25 @@
 #!/usr/bin/env node
 
+const yargs = require('yargs');
 const fs = require('fs');
 const child_process = require('child_process');
 const prettierDiff = require('../');
 const tempfile = require('tempfile');
 const shell = require('shell-escape-tag').default;
 
-const [fromPath, toPath] = process.argv.slice(2);
+const [fromPath, toPath] = yargs
+  .help()
+  .version()
+  .usage('Usage: $0 <path> <path>')
+  .example('$0 test/js.js test/js.js.uglified')
+  .example('$0 test/json.json test/json.json.uglified')
+  .example('git difftool --extcmd=$0')
+  .demandCommand(
+    2,
+    2,
+    'Not enough arguments: got $0, need exactly 2',
+    'Too many arguments: got $0, need exactly 2'
+  ).argv._;
 
 const fromContent = fs.readFileSync(fromPath).toString();
 const toContent = fs.readFileSync(toPath).toString();
