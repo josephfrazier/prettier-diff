@@ -32,8 +32,8 @@ module.exports = function(
   // try to format JSON files
   // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
   try {
-    fromPretty = stringify(JSON.parse(fromContent), { space: 2 });
-    toPretty = stringify(JSON.parse(toContent), { space: 2 });
+    fromPretty = jsonPrettify(fromContent);
+    toPretty = jsonPrettify(toContent);
   } catch (err) {}
 
   const patch = diff.createTwoFilesPatch(
@@ -45,3 +45,7 @@ module.exports = function(
 
   return { fromPretty, toPretty, patch };
 };
+
+function jsonPrettify(jsonString) {
+  return stringify(JSON.parse(jsonString), { space: 2 });
+}
