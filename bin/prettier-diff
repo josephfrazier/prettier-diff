@@ -46,9 +46,9 @@ try {
   });
 } catch (err) {
   process.exitCode = err.status;
+} finally {
+  map(fs.unlinkSync, [fromTmp, toTmp]);
 }
-
-map(fs.unlinkSync, [fromTmp, toTmp]);
 
 function parseArgs() {
   // yargs shows the full path to binaries that are in $PATH,
