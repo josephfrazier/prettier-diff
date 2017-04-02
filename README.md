@@ -36,6 +36,7 @@ prettier-diff path/to/first/file path/to/second/file
 or configure it as a git [difftool]:
 
 ```bash
+git config --global pager.difftool true
 git difftool --extcmd=prettier-diff
 ```
 
