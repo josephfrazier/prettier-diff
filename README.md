@@ -27,10 +27,15 @@ Note that you'll also need to have [git] installed, since it provides the input 
 
 ## Use
 
-You can use `prettier-diff` instead of `diff`, or configure it as a git [difftool].
+You can use `prettier-diff` instead of `diff`:
 
 ```bash
 prettier-diff path/to/first/file path/to/second/file
+```
+
+or configure it as a git [difftool]:
+
+```bash
 git difftool --extcmd=prettier-diff
 ```
 
