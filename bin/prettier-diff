@@ -6,7 +6,7 @@ const yargs = require('yargs');
 const fs = require('fs');
 const child_process = require('child_process');
 const prettierDiff = require('../');
-const tempfile = require('tempfile');
+const tempWrite = require('temp-write');
 const shell = require('shell-escape-tag').default;
 
 const [fromPath, toPath] = parseArgs();
@@ -21,10 +21,7 @@ const { fromPretty, toPretty } = prettierDiff({
   toContent,
 });
 
-const [fromTmp, toTmp] = [tempfile(), tempfile()];
-
-fs.writeFileSync(fromTmp, fromPretty);
-fs.writeFileSync(toTmp, toPretty);
+const [fromTmp, toTmp] = [fromPretty, toPretty].map(p => tempWrite.sync(p));
 
 // If process.env.BASE is present, we're running as a git difftool,
 // so use the correct paths. See https://git-scm.com/docs/git-difftool
