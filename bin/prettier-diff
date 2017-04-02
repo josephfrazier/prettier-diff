@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const isGitRepo = require('is-git-repository').default;
 const isPathGlobal = require('is-path-global');
 const path = require('path');
 const yargs = require('yargs');
@@ -8,6 +9,25 @@ const child_process = require('child_process');
 const prettierDiff = require('../');
 const tempWrite = require('temp-write');
 const shell = require('shell-escape-tag').default;
+
+const args = process.argv.slice(2);
+const hasGitArgs = args.length === 0 || !args.every(fs.existsSync);
+const isDifftool = process.env.BASE;
+
+// If we're in a git repo, but not already running as a difftool,
+// run as a difftool. This allows simpler syntax like
+// `prettier-diff head^ bin/prettier-diff`
+//
+// TODO figure out why the `hasGitArgs` check is necessary to pass tests
+if (isGitRepo() && hasGitArgs && !isDifftool) {
+  const scriptName = process.argv[1];
+  const command = shell`\
+    git difftool --no-prompt --extcmd=${scriptName} ${args} \
+    | less --tabs=2 -RFX \
+  `;
+  child_process.execSync(command, { stdio: 'inherit' });
+  process.exit();
+}
 
 const map = (f, arr) => arr.map(x => f(x));
 

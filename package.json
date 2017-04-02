@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "test": "test/test.sh",
-    "diff": "git difftool --extcmd=./bin/prettier-diff",
+    "diff": "./bin/prettier-diff",
     "format": "prettier --single-quote --trailing-comma es5 --write index.js bin/prettier-diff"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
