@@ -11,8 +11,8 @@ const shell = require('shell-escape-tag').default;
 
 const [fromPath, toPath] = parseArgs();
 
-const fromContent = fs.readFileSync(fromPath);
-const toContent = fs.readFileSync(toPath);
+const [fromContent, toContent] = [fromPath, toPath].map(p =>
+  fs.readFileSync(p));
 
 const { fromPretty, toPretty } = prettierDiff({
   fromPath,
@@ -48,8 +48,7 @@ try {
   process.exitCode = err.status;
 }
 
-fs.unlinkSync(fromTmp);
-fs.unlinkSync(toTmp);
+[fromTmp, toTmp].forEach(p => fs.unlinkSync(p));
 
 function parseArgs() {
   // yargs shows the full path to binaries that are in $PATH,
