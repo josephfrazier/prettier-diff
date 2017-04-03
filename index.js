@@ -35,8 +35,8 @@ module.exports = function (
   // try to format JSON files
   // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
   try {
-    fromPretty = jsonPrettify(fromContent)
-    toPretty = jsonPrettify(toContent)
+    fromPretty = jsonPrettify(fromContent, prettierOptions)
+    toPretty = jsonPrettify(toContent, prettierOptions)
   } catch (err) {}
 
   const patch = diff.createTwoFilesPatch(
@@ -49,8 +49,10 @@ module.exports = function (
   return {fromPretty, toPretty, patch}
 }
 
-function jsonPrettify (jsonString) {
-  const sorted = stringify(JSON.parse(jsonString), {space: 2})
+function jsonPrettify (jsonString, prettierOptions) {
+  const sorted = stringify(JSON.parse(jsonString), {
+    space: prettierOptions.tabWidth
+  })
   // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
   // `null` at the end of a line. See the grammar at http://json.org/
   return sorted.replace(/(["\d}\]el])$/gm, '$1,')
