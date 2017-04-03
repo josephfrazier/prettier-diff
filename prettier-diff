@@ -104,7 +104,7 @@ function getMaybePrettifiedTmpFile (filepath) {
   const filepathClean = (filepath !== '/dev/null' && process.env.BASE) ||
     filepath
 
-  if (!shouldPrettify(filepath)) {
+  if (!shouldPrettify(filepathClean)) {
     return [filepath, filepathClean]
   }
 
