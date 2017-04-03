@@ -1,7 +1,5 @@
 # TODO
 
-* Handle added/deleted files, rather than just showing "modified"
-  * will probably have to check whether fromContent/toContent are empty
 * Parse `prettier` options from .editorconfig files
   * https://github.com/editorconfig/editorconfig-core-js
   * https://github.com/prettier/prettier/search?q=editorconfig&type=Issues&utf8=%E2%9C%93
