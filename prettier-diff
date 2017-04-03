@@ -27,7 +27,7 @@ const isDifftool = process.env.BASE
 
 // If we're in a git repo, but not already running as a difftool,
 // run as a difftool. This allows simpler syntax like
-// `prettier-diff head^ bin/prettier-diff`
+// `prettier-diff head^ prettier-diff`
 //
 // TODO figure out why the `hasGitArgs` check is necessary to pass tests
 if (isGitRepo() && hasGitArgs && !isDifftool) {
@@ -58,7 +58,7 @@ try {
     .replace(`--- a${fromTmp}`, `--- a/${fromPathClean}`)
     .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`)
 
-  const command = shell`${__dirname}/../node_modules/.bin/diff-so-fancy`
+  const command = shell`${__dirname}/node_modules/.bin/diff-so-fancy`
 
   pipeLessSync(command, {
     input: diffOutput,
