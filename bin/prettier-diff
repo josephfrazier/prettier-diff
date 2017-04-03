@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
-const isGitRepo = require('is-git-repository').default;
-const isPathGlobal = require('is-path-global');
-const path = require('path');
-const yargs = require('yargs');
-const fs = require('fs');
-const child_process = require('child_process');
-const prettierDiff = require('../');
-const tempWrite = require('temp-write');
-const shell = require('shell-escape-tag').default;
+const isGitRepo = require('is-git-repository').default
+const isPathGlobal = require('is-path-global')
+const path = require('path')
+const yargs = require('yargs')
+const fs = require('fs')
+const cp = require('child_process')
+const prettierDiff = require('../')
+const tempWrite = require('temp-write')
+const shell = require('shell-escape-tag').default
 
-const args = process.argv.slice(2);
-const hasGitArgs = args.length === 0 || !args.every(fs.existsSync);
-const isDifftool = process.env.BASE;
+const args = process.argv.slice(2)
+const hasGitArgs = args.length === 0 || !args.every(fs.existsSync)
+const isDifftool = process.env.BASE
 
 // If we're in a git repo, but not already running as a difftool,
 // run as a difftool. This allows simpler syntax like
@@ -20,64 +20,64 @@ const isDifftool = process.env.BASE;
 //
 // TODO figure out why the `hasGitArgs` check is necessary to pass tests
 if (isGitRepo() && hasGitArgs && !isDifftool) {
-  const scriptName = process.argv[1];
-  const command = shell`git difftool --no-prompt --extcmd=${scriptName} ${args}`;
-  pipeLessSync(command, { stdio: 'inherit' });
-  process.exit();
+  const scriptName = process.argv[1]
+  const command = shell`git difftool --no-prompt --extcmd=${scriptName} ${args}`
+  pipeLessSync(command, {stdio: 'inherit'})
+  process.exit()
 }
 
-const map = (f, arr) => arr.map(x => f(x));
+const map = (f, arr) => arr.map(x => f(x))
 
-const [fromPath, toPath] = parseArgs();
-const [fromContent, toContent] = map(fs.readFileSync, [fromPath, toPath]);
+const [fromPath, toPath] = parseArgs()
+const [fromContent, toContent] = map(fs.readFileSync, [fromPath, toPath])
 
-const { fromPretty, toPretty } = prettierDiff({
+const {fromPretty, toPretty} = prettierDiff({
   fromPath,
   toPath,
   fromContent,
-  toContent,
-});
+  toContent
+})
 
-const [fromTmp, toTmp] = map(tempWrite.sync, [fromPretty, toPretty]);
+const [fromTmp, toTmp] = map(tempWrite.sync, [fromPretty, toPretty])
 
 // If process.env.BASE is present, we're running as a git difftool,
 // so use the correct paths. See https://git-scm.com/docs/git-difftool
-const fromPathClean = process.env.BASE || fromPath;
-const toPathClean = process.env.BASE || toPath;
+const fromPathClean = process.env.BASE || fromPath
+const toPathClean = process.env.BASE || toPath
 
 try {
-  const diffOutput = child_process
+  const diffOutput = cp
     .execSync(shell`git diff --color --no-index ${fromTmp} ${toTmp} | cat`)
     .toString()
     .replace(`--- a${fromTmp}`, `--- a/${fromPathClean}`)
-    .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`);
+    .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`)
 
-  const command = shell`${__dirname}/../node_modules/.bin/diff-so-fancy`;
+  const command = shell`${__dirname}/../node_modules/.bin/diff-so-fancy`
 
   pipeLessSync(command, {
     input: diffOutput,
-    stdio: ['pipe', 'inherit', 'inherit'],
-  });
+    stdio: ['pipe', 'inherit', 'inherit']
+  })
 } catch (err) {
-  process.exitCode = err.status;
+  process.exitCode = err.status
 } finally {
-  map(fs.unlinkSync, [fromTmp, toTmp]);
+  map(fs.unlinkSync, [fromTmp, toTmp])
 }
 
-function pipeLessSync(command, options) {
-  command += ' | less --tabs=2 -RFX';
-  child_process.execSync(command, options);
+function pipeLessSync (command, options) {
+  command += ' | less --tabs=2 -RFX'
+  cp.execSync(command, options)
 }
 
-function parseArgs() {
+function parseArgs () {
   // yargs shows the full path to binaries that are in $PATH,
   // so work around that by substituting the basename if possible.
   // See https://github.com/yargs/yargs/issues/538
-  let scriptName = process.argv[1];
+  let scriptName = process.argv[1]
   if (isPathGlobal(scriptName)) {
-    scriptName = path.basename(scriptName);
+    scriptName = path.basename(scriptName)
   } else {
-    scriptName = '$0';
+    scriptName = '$0'
   }
 
   return yargs
@@ -92,5 +92,5 @@ function parseArgs() {
       2,
       'Not enough arguments: got $0, need exactly 2',
       'Too many arguments: got $0, need exactly 2'
-    ).argv._;
+    ).argv._
 }

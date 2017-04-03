@@ -9,9 +9,11 @@
     "index.js"
   ],
   "scripts": {
+    "lint": "eslint index.js bin/prettier-diff",
+    "pretest": "yarn lint",
     "test": "test/test.sh",
     "diff": "./bin/prettier-diff",
-    "format": "prettier --single-quote --trailing-comma es5 --write index.js bin/prettier-diff"
+    "format": "prettier-standard index.js bin/prettier-diff"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
@@ -27,5 +29,11 @@
     "temp-write": "^3.2.0",
     "yargs": "^7.0.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^7.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1",
+    "prettier-standard": "^2.0.2"
+  }
 }
