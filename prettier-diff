@@ -21,21 +21,7 @@ const defaultPrettierOptions = {
   bracketSpacing: true
 }
 
-const args = process.argv.slice(2)
-const hasGitArgs = args.length === 0 || !args.every(fs.existsSync)
-const isDifftool = process.env.BASE
-
-// If we're in a git repo, but not already running as a difftool,
-// run as a difftool. This allows simpler syntax like
-// `prettier-diff head^ prettier-diff`
-//
-// TODO figure out why the `hasGitArgs` check is necessary to pass tests
-if (isGitRepo() && hasGitArgs && !isDifftool) {
-  const scriptName = process.argv[1]
-  const command = shell`git difftool --no-prompt --extcmd=${scriptName} ${args}`
-  pipeLessSync(command, {stdio: 'inherit'})
-  process.exit()
-}
+maybeBecomeDifftool()
 
 const [fromPath, toPath] = parseArgs()
 
@@ -69,6 +55,24 @@ try {
 } finally {
   unlinkTmp(fromTmp, fromPath)
   unlinkTmp(toTmp, toPath)
+}
+
+function maybeBecomeDifftool () {
+  const args = process.argv.slice(2)
+  const hasGitArgs = args.length === 0 || !args.every(fs.existsSync)
+  const isDifftool = process.env.BASE
+
+  // If we're in a git repo, but not already running as a difftool,
+  // run as a difftool. This allows simpler syntax like
+  // `prettier-diff head^ bin/prettier-diff`
+  //
+  // TODO figure out why the `hasGitArgs` check is necessary to pass tests
+  if (isGitRepo() && hasGitArgs && !isDifftool) {
+    const scriptName = process.argv[1]
+    const command = shell`git difftool --no-prompt --extcmd=${scriptName} ${args}`
+    pipeLessSync(command, {stdio: 'inherit'})
+    process.exit()
+  }
 }
 
 function editorConfigToPrettier (filepath = '') {
