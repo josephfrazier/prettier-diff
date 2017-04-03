@@ -71,9 +71,13 @@ try {
 } catch (err) {
   process.exitCode = err.status
 } finally {
-  // TODO handle files individually?
-  if (fromTmp !== fromPath && toTmp !== toPath) {
-    map(fs.unlinkSync, [fromTmp, toTmp])
+  unlinkTmp(fromTmp, fromPath)
+  unlinkTmp(toTmp, toPath)
+}
+
+function unlinkTmp (tmpPath, origPath) {
+  if (tmpPath !== origPath) {
+    fs.unlinkSync(tmpPath)
   }
 }
 
