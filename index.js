@@ -23,21 +23,8 @@ module.exports = function (
   fromContent = fromContent.toString()
   toContent = toContent.toString()
 
-  let fromPretty = fromContent
-  let toPretty = toContent
-
-  // try to format JS files
-  try {
-    fromPretty = prettier.format(fromContent, prettierOptions)
-    toPretty = prettier.format(toContent, prettierOptions)
-  } catch (err) {}
-
-  // try to format JSON files
-  // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
-  try {
-    fromPretty = jsonPrettify(fromContent, prettierOptions)
-    toPretty = jsonPrettify(toContent, prettierOptions)
-  } catch (err) {}
+  let fromPretty = prettify(fromContent, prettierOptions)
+  let toPretty = prettify(toContent, prettierOptions)
 
   const patch = diff.createTwoFilesPatch(
     fromPath,
@@ -56,4 +43,21 @@ function jsonPrettify (jsonString, prettierOptions) {
   // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
   // `null` at the end of a line. See the grammar at http://json.org/
   return sorted.replace(/(["\d}\]el])$/gm, '$1,')
+}
+
+function prettify (content, prettierOptions) {
+  let pretty = content
+
+  // try to format JS files
+  try {
+    pretty = prettier.format(content, prettierOptions)
+  } catch (err) {}
+
+  // try to format JSON files
+  // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
+  try {
+    pretty = jsonPrettify(content, prettierOptions)
+  } catch (err) {}
+
+  return pretty
 }
