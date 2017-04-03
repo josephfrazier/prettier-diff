@@ -6,7 +6,8 @@ const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs')
 const cp = require('child_process')
-const prettierDiff = require('../')
+const prettier = require('prettier')
+const stringify = require('json-stable-stringify')
 const tempWrite = require('temp-write')
 const shell = require('shell-escape-tag').default
 
@@ -53,15 +54,8 @@ let fromTmp, toTmp
 if (shouldPrettify(fromPath) || shouldPrettify(toPath)) {
   const [fromContent, toContent] = map(fs.readFileSync, [fromPath, toPath])
 
-  const {fromPretty, toPretty} = prettierDiff({
-    fromPath: fromPathClean,
-    toPath: toPathClean,
-    fromContent,
-    toContent,
-    fromPrettierOptions: defaultPrettierOptions,
-    toPrettierOptions: defaultPrettierOptions
-  });
-
+  const fromPretty = prettify(fromContent.toString(), defaultPrettierOptions)
+  const toPretty = prettify(toContent.toString(), defaultPrettierOptions);
   [fromTmp, toTmp] = map(tempWrite.sync, [fromPretty, toPretty])
 } else {
   [fromTmp, toTmp] = [fromPath, toPath]
@@ -96,6 +90,32 @@ function unlinkTmp (tmpPath, origPath) {
 function shouldPrettify (filepath) {
   const extension = path.extname(filepath)
   return ['.js', '.json', ''].includes(extension)
+}
+
+function prettify (content, prettierOptions) {
+  let pretty = content
+
+  // try to format JS files
+  try {
+    pretty = prettier.format(content, prettierOptions)
+  } catch (err) {}
+
+  // try to format JSON files
+  // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
+  try {
+    pretty = jsonPrettify(content, prettierOptions)
+  } catch (err) {}
+
+  return pretty
+}
+
+function jsonPrettify (jsonString, prettierOptions) {
+  const sorted = stringify(JSON.parse(jsonString), {
+    space: prettierOptions.tabWidth
+  })
+  // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
+  // `null` at the end of a line. See the grammar at http://json.org/
+  return sorted.replace(/(["\d}\]el])$/gm, '$1,')
 }
 
 function pipeLessSync (command, options) {

@@ -36,7 +36,7 @@ prettier-diff # works like `git diff`
 
 ## Example
 
-For example, here's what an older version of [index.js](index.js) looked like:
+For example, here's what an older version of index.js (no longer present) looked like:
 
 ```js
 const prettier = require('prettier');

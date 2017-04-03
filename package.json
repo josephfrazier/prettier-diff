@@ -2,18 +2,16 @@
   "name": "prettier-diff",
   "version": "0.0.4",
   "description": "git difftool for semantic JavaScript diffs",
-  "main": "index.js",
   "bin": "bin/prettier-diff",
   "files": [
-    "bin/prettier-diff",
-    "index.js"
+    "bin/prettier-diff"
   ],
   "scripts": {
-    "lint": "eslint index.js bin/prettier-diff",
+    "lint": "eslint bin/prettier-diff",
     "pretest": "yarn lint",
     "test": "test/test.sh",
     "diff": "./bin/prettier-diff",
-    "format": "prettier-standard index.js bin/prettier-diff"
+    "format": "prettier-standard bin/prettier-diff"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
