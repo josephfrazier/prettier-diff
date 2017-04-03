@@ -21,11 +21,8 @@ const isDifftool = process.env.BASE;
 // TODO figure out why the `hasGitArgs` check is necessary to pass tests
 if (isGitRepo() && hasGitArgs && !isDifftool) {
   const scriptName = process.argv[1];
-  const command = shell`\
-    git difftool --no-prompt --extcmd=${scriptName} ${args} \
-    | less --tabs=2 -RFX \
-  `;
-  child_process.execSync(command, { stdio: 'inherit' });
+  const command = shell`git difftool --no-prompt --extcmd=${scriptName} ${args}`;
+  pipeLessSync(command, { stdio: 'inherit' });
   process.exit();
 }
 
@@ -55,12 +52,9 @@ try {
     .replace(`--- a${fromTmp}`, `--- a/${fromPathClean}`)
     .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`);
 
-  const command = shell`\
-    ${__dirname}/../node_modules/.bin/diff-so-fancy \
-    | less --tabs=2 -RFX
-  `;
+  const command = shell`${__dirname}/../node_modules/.bin/diff-so-fancy`;
 
-  child_process.execSync(command, {
+  pipeLessSync(command, {
     input: diffOutput,
     stdio: ['pipe', 'inherit', 'inherit'],
   });
@@ -68,6 +62,11 @@ try {
   process.exitCode = err.status;
 } finally {
   map(fs.unlinkSync, [fromTmp, toTmp]);
+}
+
+function pipeLessSync(command, options) {
+  command += ' | less --tabs=2 -RFX';
+  child_process.execSync(command, options);
 }
 
 function parseArgs() {
