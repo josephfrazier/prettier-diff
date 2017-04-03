@@ -87,9 +87,9 @@ function parseArgs () {
     .help()
     .version()
     .usage(`Usage: ${scriptName} <path> <path>`)
-    .example(`${scriptName} test/js.js test/js.js.uglified`)
-    .example(`${scriptName} test/json.json test/json.json.uglified`)
-    .example(`git difftool --extcmd=${scriptName}`)
+    .example(`${scriptName} test/js.js test/js.uglified.js`)
+    .example(`${scriptName} test/json.json test/json.uglified.json`)
+    .example(`${scriptName} head^`)
     .demandCommand(
       2,
       2,
