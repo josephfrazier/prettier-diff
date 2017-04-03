@@ -27,5 +27,7 @@
     "temp-write": "^3.2.0",
     "yargs": "^7.0.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  }
 }
