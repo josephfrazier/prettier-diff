@@ -30,10 +30,6 @@ const [fromPath, toPath] = parseArgs()
 const fromPathClean = cleanPath(fromPath)
 const toPathClean = cleanPath(toPath)
 
-function cleanPath (filepath) {
-  return (filepath !== '/dev/null' && process.env.BASE) || filepath
-}
-
 const fromTmp = getMaybePrettifiedTmpFile(fromPath, fromPathClean)
 const toTmp = getMaybePrettifiedTmpFile(toPath, toPathClean)
 
@@ -75,66 +71,6 @@ function maybeBecomeDifftool () {
   }
 }
 
-function editorConfigToPrettier (filepath = '') {
-  const config = editorconfig.parseSync(filepath)
-  // Object.create doesn't work here
-  let result = JSON.parse(JSON.stringify(defaultPrettierOptions))
-  result.tabWidth = config.tab_width || result.tabWidth
-  result.printWidth = config.max_line_length || result.printWidth
-  return result
-}
-
-function unlinkTmp (tmpPath, origPath) {
-  if (tmpPath !== origPath) {
-    fs.unlinkSync(tmpPath)
-  }
-}
-
-function getMaybePrettifiedTmpFile (filepath, filepathClean) {
-  if (!shouldPrettify(filepath)) {
-    return filepath
-  }
-
-  const prettierOptions = editorConfigToPrettier(filepathClean)
-
-  const content = fs.readFileSync(filepath).toString()
-  const pretty = prettify(content, prettierOptions)
-  const tmpPath = tempWrite.sync(pretty)
-
-  return tmpPath
-}
-
-function shouldPrettify (filepath) {
-  const extension = path.extname(filepath)
-  return ['.js', '.json', ''].includes(extension)
-}
-
-function prettify (content, prettierOptions) {
-  let pretty = content
-
-  // try to format JS files
-  try {
-    pretty = prettier.format(content, prettierOptions)
-  } catch (err) {}
-
-  // try to format JSON files
-  // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
-  try {
-    pretty = jsonPrettify(content, prettierOptions)
-  } catch (err) {}
-
-  return pretty
-}
-
-function jsonPrettify (jsonString, prettierOptions) {
-  const sorted = stringify(JSON.parse(jsonString), {
-    space: prettierOptions.tabWidth
-  })
-  // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
-  // `null` at the end of a line. See the grammar at http://json.org/
-  return sorted.replace(/(["\d}\]el])$/gm, '$1,')
-}
-
 function pipeLessSync (command, options) {
   command += ' | less --tabs=2 -RFX'
   cp.execSync(command, options)
@@ -164,4 +100,68 @@ function parseArgs () {
       'Not enough arguments: got $0, need exactly 2',
       'Too many arguments: got $0, need exactly 2'
     ).argv._
+}
+
+function cleanPath (filepath) {
+  return (filepath !== '/dev/null' && process.env.BASE) || filepath
+}
+
+function getMaybePrettifiedTmpFile (filepath, filepathClean) {
+  if (!shouldPrettify(filepath)) {
+    return filepath
+  }
+
+  const prettierOptions = editorConfigToPrettier(filepathClean)
+
+  const content = fs.readFileSync(filepath).toString()
+  const pretty = prettify(content, prettierOptions)
+  const tmpPath = tempWrite.sync(pretty)
+
+  return tmpPath
+}
+
+function shouldPrettify (filepath) {
+  const extension = path.extname(filepath)
+  return ['.js', '.json', ''].includes(extension)
+}
+
+function editorConfigToPrettier (filepath = '') {
+  const config = editorconfig.parseSync(filepath)
+  // Object.create doesn't work here
+  let result = JSON.parse(JSON.stringify(defaultPrettierOptions))
+  result.tabWidth = config.tab_width || result.tabWidth
+  result.printWidth = config.max_line_length || result.printWidth
+  return result
+}
+
+function prettify (content, prettierOptions) {
+  let pretty = content
+
+  // try to format JS files
+  try {
+    pretty = prettier.format(content, prettierOptions)
+  } catch (err) {}
+
+  // try to format JSON files
+  // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
+  try {
+    pretty = jsonPrettify(content, prettierOptions)
+  } catch (err) {}
+
+  return pretty
+}
+
+function jsonPrettify (jsonString, prettierOptions) {
+  const sorted = stringify(JSON.parse(jsonString), {
+    space: prettierOptions.tabWidth
+  })
+  // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
+  // `null` at the end of a line. See the grammar at http://json.org/
+  return sorted.replace(/(["\d}\]el])$/gm, '$1,')
+}
+
+function unlinkTmp (tmpPath, origPath) {
+  if (tmpPath !== origPath) {
+    fs.unlinkSync(tmpPath)
+  }
 }
