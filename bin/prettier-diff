@@ -36,8 +36,6 @@ if (isGitRepo() && hasGitArgs && !isDifftool) {
   process.exit()
 }
 
-const map = (f, arr) => arr.map(x => f(x))
-
 const [fromPath, toPath] = parseArgs()
 
 // If process.env.BASE is present, we're running as a git difftool,
@@ -49,17 +47,8 @@ function cleanPath (filepath) {
   return (filepath !== '/dev/null' && process.env.BASE) || filepath
 }
 
-let fromTmp, toTmp
-// TODO handle files individually?
-if (shouldPrettify(fromPath) || shouldPrettify(toPath)) {
-  const [fromContent, toContent] = map(fs.readFileSync, [fromPath, toPath])
-
-  const fromPretty = prettify(fromContent.toString(), defaultPrettierOptions)
-  const toPretty = prettify(toContent.toString(), defaultPrettierOptions);
-  [fromTmp, toTmp] = map(tempWrite.sync, [fromPretty, toPretty])
-} else {
-  [fromTmp, toTmp] = [fromPath, toPath]
-}
+const fromTmp = getMaybePrettifiedTmpFile(fromPath)
+const toTmp = getMaybePrettifiedTmpFile(toPath)
 
 try {
   const diffOutput = cp
@@ -85,6 +74,18 @@ function unlinkTmp (tmpPath, origPath) {
   if (tmpPath !== origPath) {
     fs.unlinkSync(tmpPath)
   }
+}
+
+function getMaybePrettifiedTmpFile (filepath) {
+  if (!shouldPrettify(filepath)) {
+    return filepath
+  }
+
+  const content = fs.readFileSync(filepath).toString()
+  const pretty = prettify(content, defaultPrettierOptions)
+  const tmpPath = tempWrite.sync(pretty)
+
+  return tmpPath
 }
 
 function shouldPrettify (filepath) {
