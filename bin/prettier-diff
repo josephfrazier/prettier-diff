@@ -6,6 +6,7 @@ const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs')
 const cp = require('child_process')
+const editorconfig = require('editorconfig')
 const prettier = require('prettier')
 const stringify = require('json-stable-stringify')
 const tempWrite = require('temp-write')
@@ -47,8 +48,8 @@ function cleanPath (filepath) {
   return (filepath !== '/dev/null' && process.env.BASE) || filepath
 }
 
-const fromTmp = getMaybePrettifiedTmpFile(fromPath)
-const toTmp = getMaybePrettifiedTmpFile(toPath)
+const fromTmp = getMaybePrettifiedTmpFile(fromPath, fromPathClean)
+const toTmp = getMaybePrettifiedTmpFile(toPath, toPathClean)
 
 try {
   const diffOutput = cp
@@ -70,19 +71,30 @@ try {
   unlinkTmp(toTmp, toPath)
 }
 
+function editorConfigToPrettier (filepath = '') {
+  const config = editorconfig.parseSync(filepath)
+  // Object.create doesn't work here
+  let result = JSON.parse(JSON.stringify(defaultPrettierOptions))
+  result.tabWidth = config.tab_width || result.tabWidth
+  result.printWidth = config.max_line_length || result.printWidth
+  return result
+}
+
 function unlinkTmp (tmpPath, origPath) {
   if (tmpPath !== origPath) {
     fs.unlinkSync(tmpPath)
   }
 }
 
-function getMaybePrettifiedTmpFile (filepath) {
+function getMaybePrettifiedTmpFile (filepath, filepathClean) {
   if (!shouldPrettify(filepath)) {
     return filepath
   }
 
+  const prettierOptions = editorConfigToPrettier(filepathClean)
+
   const content = fs.readFileSync(filepath).toString()
-  const pretty = prettify(content, defaultPrettierOptions)
+  const pretty = prettify(content, prettierOptions)
   const tmpPath = tempWrite.sync(pretty)
 
   return tmpPath
