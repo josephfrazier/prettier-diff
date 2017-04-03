@@ -25,13 +25,8 @@ maybeBecomeDifftool()
 
 const [fromPath, toPath] = parseArgs()
 
-// If process.env.BASE is present, we're running as a git difftool,
-// so use the correct paths. See https://git-scm.com/docs/git-difftool
-const fromPathClean = cleanPath(fromPath)
-const toPathClean = cleanPath(toPath)
-
-const fromTmp = getMaybePrettifiedTmpFile(fromPath, fromPathClean)
-const toTmp = getMaybePrettifiedTmpFile(toPath, toPathClean)
+const [fromTmp, fromPathClean] = getMaybePrettifiedTmpFile(fromPath)
+const [toTmp, toPathClean] = getMaybePrettifiedTmpFile(toPath)
 
 try {
   const diffOutput = cp
@@ -103,13 +98,14 @@ function parseArgs () {
     ).argv._
 }
 
-function cleanPath (filepath) {
-  return (filepath !== '/dev/null' && process.env.BASE) || filepath
-}
+function getMaybePrettifiedTmpFile (filepath) {
+  // If process.env.BASE is present, we're running as a git difftool,
+  // so use the correct paths. See https://git-scm.com/docs/git-difftool
+  const filepathClean = (filepath !== '/dev/null' && process.env.BASE) ||
+    filepath
 
-function getMaybePrettifiedTmpFile (filepath, filepathClean) {
   if (!shouldPrettify(filepath)) {
-    return filepath
+    return [filepath, filepathClean]
   }
 
   const prettierOptions = editorConfigToPrettier(filepathClean)
@@ -118,7 +114,7 @@ function getMaybePrettifiedTmpFile (filepath, filepathClean) {
   const pretty = prettify(content, prettierOptions)
   const tmpPath = tempWrite.sync(pretty)
 
-  return tmpPath
+  return [tmpPath, filepathClean]
 }
 
 function shouldPrettify (filepath) {
