@@ -13,7 +13,7 @@
     "pretest": "yarn lint",
     "test": "test/test.sh",
     "diff": "./bin/prettier-diff",
-    "format": "prettier --single-quote --trailing-comma es5 --write index.js bin/prettier-diff"
+    "format": "prettier-standard index.js bin/prettier-diff"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
