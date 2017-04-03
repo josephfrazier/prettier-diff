@@ -9,6 +9,8 @@
     "index.js"
   ],
   "scripts": {
+    "lint": "eslint index.js bin/prettier-diff",
+    "pretest": "yarn lint",
     "test": "test/test.sh",
     "diff": "./bin/prettier-diff",
     "format": "prettier --single-quote --trailing-comma es5 --write index.js bin/prettier-diff"
