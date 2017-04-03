@@ -17,7 +17,6 @@
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "diff": "^3.2.0",
     "diff-so-fancy": "^0.11.4",
     "editorconfig": "^0.13.2",
     "is-git-repository": "^1.0.1",
