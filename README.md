@@ -36,63 +36,15 @@ prettier-diff # works like `git diff`
 
 ## Example
 
-For example, here's what an older version of index.js (no longer present) looked like:
+For example, this repository contains a large commit that rewrote most of its code with [prettier-standard], and also renames a variable. You can see the commit on GitHub here: [8cc0119]
 
-```js
-const prettier = require('prettier');
-const diff = require('diff');
-
-// https://github.com/prettier/prettier/tree/a707dda53b13a6956a825609f30baead7ef08a59#api
-const defaultPrettierOptions = {
-  printWidth: 80,
-  tabWidth: 2,
-  singleQuote: true,
-  trailingComma: 'all',
-  bracketSpacing: true,
-};
-
-module.exports = function(
-  {
-    fromPath,
-    toPath,
-    fromContent,
-    toContent,
-    prettierOptions = defaultPrettierOptions,
-  }
-) {
-  let fromPretty, toPretty;
-
-  try {
-    fromPretty = prettier.format(fromContent, prettierOptions);
-    toPretty = prettier.format(toContent, prettierOptions);
-  } catch (err) {
-    fromPretty = fromContent;
-    toPretty = toContent;
-  }
-
-  const patch = diff.createTwoFilesPatch(
-    fromPath,
-    toPath,
-    fromPretty,
-    toPretty
-  );
-
-  return { fromPretty: fromPretty, toPretty: toPretty, patch: patch };
-};
-```
-
-Here's the same file, but passed through `uglifyjs --comments all`:
-
-```js
-const prettier=require("prettier");const diff=require("diff");
-// https://github.com/prettier/prettier/tree/a707dda53b13a6956a825609f30baead7ef08a59#api
-const defaultPrettierOptions={printWidth:80,tabWidth:2,singleQuote:true,trailingComma:"all",bracketSpacing:true};module.exports=function({fromPath,toPath,fromContent,toContent,prettierOptions=defaultPrettierOptions}){let fromPretty,toPretty;try{fromPretty=prettier.format(fromContent,prettierOptions);toPretty=prettier.format(toContent,prettierOptions)}catch(err){fromPretty=fromContent;toPretty=toContent}const patch=diff.createTwoFilesPatch(fromPath,toPath,fromPretty,toPretty);return{fromPretty:fromPretty,toPretty:toPretty,patch:patch}};
-```
-
-Running `prettier-diff` on these two shows us that there is no semantic difference between them (the red blocks are where `uglifyjs` removed blank lines):
+With `prettier-diff`, only the renaming is shown:
 
 ```bash
-prettier-diff index.js test/index.js.uglified
+prettier-diff 8cc0119^ 8cc0119
 ```
 
-![screenshot of `prettier-diff index.js test/index.js.uglified`](screenshot.png)
+![screenshot of `prettier-diff 8cc0119^ 8cc0119`](screenshot.png)
+
+[prettier-standard]: https://github.com/sheerun/prettier-standard
+[8cc0119]: https://github.com/josephfrazier/prettier-diff/commit/8cc0119e3969132670e6b13cde1583280fababa5
