@@ -2,29 +2,21 @@ const prettier = require('prettier')
 const stringify = require('json-stable-stringify')
 const diff = require('diff')
 
-// https://github.com/prettier/prettier/tree/a707dda53b13a6956a825609f30baead7ef08a59#api
-const defaultPrettierOptions = {
-  printWidth: 80,
-  tabWidth: 2,
-  singleQuote: true,
-  trailingComma: 'all',
-  bracketSpacing: true
-}
-
 module.exports = function (
   {
     fromPath,
     toPath,
     fromContent,
     toContent,
-    prettierOptions = defaultPrettierOptions
+    fromPrettierOptions,
+    toPrettierOptions
   }
 ) {
   fromContent = fromContent.toString()
   toContent = toContent.toString()
 
-  let fromPretty = prettify(fromContent, prettierOptions)
-  let toPretty = prettify(toContent, prettierOptions)
+  let fromPretty = prettify(fromContent, fromPrettierOptions)
+  let toPretty = prettify(toContent, toPrettierOptions)
 
   const patch = diff.createTwoFilesPatch(
     fromPath,

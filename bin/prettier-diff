@@ -10,6 +10,15 @@ const prettierDiff = require('../')
 const tempWrite = require('temp-write')
 const shell = require('shell-escape-tag').default
 
+// https://github.com/prettier/prettier/tree/a707dda53b13a6956a825609f30baead7ef08a59#api
+const defaultPrettierOptions = {
+  printWidth: 80,
+  tabWidth: 2,
+  singleQuote: true,
+  trailingComma: 'all',
+  bracketSpacing: true
+}
+
 const args = process.argv.slice(2)
 const hasGitArgs = args.length === 0 || !args.every(fs.existsSync)
 const isDifftool = process.env.BASE
@@ -48,7 +57,9 @@ if (shouldPrettify(fromPath) || shouldPrettify(toPath)) {
     fromPath: fromPathClean,
     toPath: toPathClean,
     fromContent,
-    toContent
+    toContent,
+    fromPrettierOptions: defaultPrettierOptions,
+    toPrettierOptions: defaultPrettierOptions
   });
 
   [fromTmp, toTmp] = map(tempWrite.sync, [fromPretty, toPretty])
