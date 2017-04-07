@@ -29,8 +29,9 @@ const [fromTmp, fromPathClean] = getMaybePrettifiedTmpFile(fromPath)
 const [toTmp, toPathClean] = getMaybePrettifiedTmpFile(toPath)
 
 try {
+  const diffOptions = ['--color', '--no-index']
   const diffOutput = cp
-    .execSync(shell`git diff --color --no-index ${fromTmp} ${toTmp} | cat`)
+    .execSync(shell`git diff ${diffOptions} ${fromTmp} ${toTmp} | cat`)
     .toString()
     .replace(`--- a${fromTmp}`, `--- a/${fromPathClean}`)
     .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`)
