@@ -1,5 +1,6 @@
 # TODO
 
+* Use `git difftool --dir-diff` to avoid running multiple times
 * Make diffing multiple files faster. Currently, prettier takes a while to
   format the "from" file, but is fast on the "to" file. This is because the
   code takes some time to load. If we can get the non-difftool wrapper to start
