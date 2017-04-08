@@ -1,7 +1,7 @@
 {
   "name": "prettier-diff",
   "version": "0.0.5",
-  "description": "git difftool for semantic JavaScript diffs",
+  "description": "git textconv for semantic JavaScript diffs",
   "bin": "prettier-diff",
   "files": [
     "prettier-diff"
@@ -10,22 +10,14 @@
     "lint": "eslint prettier-diff",
     "pretest": "yarn lint",
     "test": "test/test.sh",
-    "diff": "./prettier-diff",
     "format": "prettier-standard prettier-diff"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "common-tags": "^1.4.0",
-    "diff-so-fancy": "^0.11.4",
-    "editorconfig": "^0.13.2",
-    "is-git-repository": "^1.0.1",
-    "is-path-global": "^2.0.0",
     "json-stable-stringify": "^1.0.1",
-    "prettier": "^0.22.0",
-    "shell-escape-tag": "^1.1.0",
-    "temp-write": "^3.2.0"
+    "prettier": "^0.22.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

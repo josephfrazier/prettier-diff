@@ -1,11 +1,11 @@
 # prettier-diff
 
-`prettier-diff` is a wrapper around [diff-so-fancy] that preprocesses JavaScript and JSON files to reduce the number of formatting changes that appear in the diff.
+`prettier-diff` is a `git diff` [textconv] driver that preprocesses JavaScript and JSON files to reduce the number of formatting changes that appear in the diff.
 This allows you to focus on the semantic changes, which is useful when viewing diffs that also have formatting changes.
 
 JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-stable-stringify].
 
-[diff-so-fancy]: https://github.com/so-fancy/diff-so-fancy
+[textconv]: https://git.wiki.kernel.org/index.php/Textconv
 [prettier]: https://github.com/prettier/prettier
 [json-stable-stringify]: https://github.com/substack/json-stable-stringify
 
@@ -19,29 +19,33 @@ yarn global add prettier-diff
 npm install --global prettier-diff
 ```
 
-Note that you'll also need to have [git] installed, since it provides the input for `diff-so-fancy`.
+## Use
+
+In the git repository that you want to `prettier-diff`, configure the textconv driver and ensure that the `.gitattributes` file associates your files to it:
+
+```
+git config diff.prettier.textconv prettier-diff
+git config diff.prettier.cachetextconv true
+
+echo '*.js diff=prettier' >> .gitattributes
+```
+
+Now, `git diff` will automatically run `prettier-diff` on your `.js` files, and it plays well with the other `git diff` options like `--ignore-all-space`, as well as [diff-so-fancy].
+See here for more information: [textconv]
 
 [yarn]: https://yarnpkg.com/en/docs/getting-started
 [npm]: https://www.npmjs.com/get-npm
-[git]: https://git-scm.com/
-
-## Use
-
-You can use `prettier-diff` instead of `diff` or `git diff`:
-
-```bash
-prettier-diff path/to/first/file path/to/second/file
-prettier-diff # works like `git diff`
-```
+[diff-so-fancy]: https://github.com/so-fancy/diff-so-fancy
+[textconv]: https://git.wiki.kernel.org/index.php/Textconv
 
 ## Example
 
 For example, this repository contains a large commit that rewrote most of its code with [prettier-standard], and also renames a variable. You can see the commit on GitHub here: [8cc0119]
 
-With `prettier-diff`, only the renaming is shown:
+With `prettier-diff` configured, only the renaming is shown:
 
 ```bash
-prettier-diff 8cc0119^ 8cc0119
+git diff --color 8cc0119^ 8cc0119 | diff-so-fancy
 ```
 
 ![screenshot of `prettier-diff 8cc0119^ 8cc0119`](screenshot.png)

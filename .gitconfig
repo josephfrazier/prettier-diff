@@ -1,0 +1,9 @@
+# Note that .git/config MUST include this file for it to apply.
+# To set this up, run the following command:
+#
+# 	git config --local include.path ../.gitconfig
+#
+# See https://stackoverflow.com/questions/18329621/storing-git-config-as-part-of-the-repository/18330114#18330114
+[diff "prettier"]
+	textconv = ./prettier-diff
+	cachetextconv = false # false because this config is used for dogfooding
