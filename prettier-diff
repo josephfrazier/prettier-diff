@@ -3,7 +3,7 @@
 const isGitRepo = require('is-git-repository').default
 const isPathGlobal = require('is-path-global')
 const path = require('path')
-const yargs = require('yargs')
+const stripIndent = require('common-tags/lib/stripIndent')
 const fs = require('fs')
 const cp = require('child_process')
 const editorconfig = require('editorconfig')
@@ -78,6 +78,7 @@ function pipeLessSync (command, options) {
 }
 
 function parseArgs () {
+  // TODO is this still needed?
   // yargs shows the full path to binaries that are in $PATH,
   // so work around that by substituting the basename if possible.
   // See https://github.com/yargs/yargs/issues/538
@@ -88,19 +89,42 @@ function parseArgs () {
     scriptName = '$0'
   }
 
-  return yargs
-    .help()
-    .version()
-    .usage(`Usage: ${scriptName} <path> <path>`)
-    .example(`${scriptName} test/js.js test/js.uglified.js`)
-    .example(`${scriptName} test/json.json test/json.uglified.json`)
-    .example(`${scriptName} head^`)
-    .demandCommand(
-      2,
-      2,
-      'Not enough arguments: got $0, need exactly 2',
-      'Too many arguments: got $0, need exactly 2'
-    ).argv._
+  const args = process.argv.slice(2)
+
+  if (['--help', 'help'].includes(args[0])) {
+    console.log(
+      stripIndent`
+      Usage: prettier-diff <path> <path>
+
+      Options:
+        --help     Show help                                                 [boolean]
+        --version  Show version number                                       [boolean]
+
+      Examples:
+        prettier-diff test/js.js test/js.uglified.js
+        prettier-diff test/json.json test/json.uglified.json
+        prettier-diff head^
+    `
+    )
+    process.exit()
+  }
+
+  if (['--version'].includes(args[0])) {
+    console.log(require('./package.json').version)
+    process.exit()
+  }
+
+  if (args.length < 2) {
+    console.log(`Not enough arguments: got ${args.length}, need exactly 2`)
+    process.exit()
+  }
+
+  if (args.length > 2) {
+    console.log(`Too many arguments: got ${args.length}, need exactly 2`)
+    process.exit()
+  }
+
+  return args
 }
 
 function getMaybePrettifiedTmpFile (filepath) {

@@ -17,6 +17,7 @@
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "common-tags": "^1.4.0",
     "diff-so-fancy": "^0.11.4",
     "editorconfig": "^0.13.2",
     "is-git-repository": "^1.0.1",
@@ -24,8 +25,7 @@
     "json-stable-stringify": "^1.0.1",
     "prettier": "^0.22.0",
     "shell-escape-tag": "^1.1.0",
-    "temp-write": "^3.2.0",
-    "yargs": "^7.0.2"
+    "temp-write": "^3.2.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
