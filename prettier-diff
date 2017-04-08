@@ -51,14 +51,13 @@ function maybeBecomeDifftool () {
   const args = process.argv.slice(2)
   const isReserved = ['--help', 'help', '--version'].includes(args[0])
   const hasGitArgs = args.length === 0 || !args.every(fs.existsSync)
-  const isDifftool = process.env.BASE
 
   // If we're in a git repo, but not already running as a difftool,
   // run as a difftool. This allows simpler syntax like
   // `prettier-diff head^ bin/prettier-diff`
   //
   // TODO figure out why the `hasGitArgs` check is necessary to pass tests
-  if (isGitRepo() && !isReserved && hasGitArgs && !isDifftool) {
+  if (isGitRepo() && !isReserved && hasGitArgs && !isDifftool()) {
     const scriptName = process.argv[1]
     const command = shell`git difftool --no-prompt --extcmd=${scriptName} ${args}`
     pipeLessSync(command, {stdio: 'inherit'})
@@ -66,8 +65,12 @@ function maybeBecomeDifftool () {
   }
 }
 
+function isDifftool () {
+  return !!process.env.BASE
+}
+
 function pipeLessSync (command, options) {
-  if (!process.env.BASE) {
+  if (!isDifftool()) {
     command += shell` | ${__dirname}/node_modules/.bin/diff-so-fancy`
   }
   command += ' | less --tabs=2 -RFX'
