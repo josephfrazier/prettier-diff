@@ -36,9 +36,7 @@ try {
     .replace(`--- a${fromTmp}`, `--- a/${fromPathClean}`)
     .replace(`+++ b${toTmp}`, `+++ a/${toPathClean}`)
 
-  const command = shell`${__dirname}/node_modules/.bin/diff-so-fancy`
-
-  pipeLessSync(command, {
+  pipeLessSync(`cat`, {
     input: diffOutput,
     stdio: ['pipe', 'inherit', 'inherit']
   })
@@ -69,6 +67,9 @@ function maybeBecomeDifftool () {
 }
 
 function pipeLessSync (command, options) {
+  if (!process.env.BASE) {
+    command += shell` | ${__dirname}/node_modules/.bin/diff-so-fancy`
+  }
   command += ' | less --tabs=2 -RFX'
   cp.execSync(command, options)
 }
