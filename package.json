@@ -1,7 +1,7 @@
 {
   "name": "prettier-diff",
   "version": "0.0.6",
-  "description": "git textconv for semantic JavaScript diffs",
+  "description": "git textconv driver for semantic JavaScript/JSON diffs",
   "bin": "prettier-diff",
   "files": [
     "prettier-diff"
