@@ -28,9 +28,10 @@ git config diff.prettier.textconv prettier-diff
 git config diff.prettier.cachetextconv true
 
 echo '*.js diff=prettier' >> .gitattributes
+echo '*.json diff=prettier' >> .gitattributes
 ```
 
-Now, `git diff` will automatically run `prettier-diff` on your `.js` files, and it plays well with the other `git diff` options like `--ignore-all-space`, as well as [diff-so-fancy].
+Now, `git diff` will automatically run `prettier-diff` on your JS/JSON files, and it plays well with the other `git diff` options like `--ignore-all-space`, as well as [diff-so-fancy].
 See here for more information: [textconv]
 
 [yarn]: https://yarnpkg.com/en/docs/getting-started
