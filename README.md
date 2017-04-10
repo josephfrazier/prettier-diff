@@ -8,7 +8,7 @@ JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-
 [prettier]: https://github.com/prettier/prettier
 [json-stable-stringify]: https://github.com/substack/json-stable-stringify
 
-## Install
+## Installation
 
 You can use [yarn] or [npm] to install `prettier-diff`:
 
@@ -18,7 +18,7 @@ yarn global add prettier-diff
 npm install --global prettier-diff
 ```
 
-## Use
+## Usage
 
 ### One-off usage
 
@@ -53,7 +53,7 @@ See here for more information: [textconv]
 [diff-so-fancy]: https://github.com/so-fancy/diff-so-fancy
 [textconv]: https://git.wiki.kernel.org/index.php/Textconv
 
-## Example
+## Examples
 
 For example, this repository contains a large commit that rewrote most of its code with [prettier-standard], and also renames a variable. You can see the commit on GitHub here: [8cc0119]
 
