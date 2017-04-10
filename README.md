@@ -60,10 +60,10 @@ For example, this repository contains a large commit that rewrote most of its co
 With `prettier-diff` configured, only the renaming is shown:
 
 ```bash
-git diff --color 8cc0119^ 8cc0119 | diff-so-fancy
+prettier-diff 8cc0119^ 8cc0119 --color | diff-so-fancy
 ```
 
-![screenshot of `prettier-diff 8cc0119^ 8cc0119`](screenshot.png)
+![screenshot of `prettier-diff 8cc0119^ 8cc0119 --color | diff-so-fancy`](screenshot.png)
 
 [prettier-standard]: https://github.com/sheerun/prettier-standard
 [8cc0119]: https://github.com/josephfrazier/prettier-diff/commit/8cc0119e3969132670e6b13cde1583280fababa5
