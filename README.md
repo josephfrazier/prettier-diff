@@ -5,7 +5,6 @@ This allows you to focus on the semantic changes, which is useful when viewing d
 
 JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-stable-stringify].
 
-[textconv]: https://git.wiki.kernel.org/index.php/Textconv
 [prettier]: https://github.com/prettier/prettier
 [json-stable-stringify]: https://github.com/substack/json-stable-stringify
 
