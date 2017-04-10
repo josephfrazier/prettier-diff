@@ -23,13 +23,22 @@ npm install --global prettier-diff
 
 ### One-off usage
 
-In any git repository, just use `prettier-diff` instead of `git diff`. Behind the scenes, `prettier-diff` temporarily modifies the `.git/config` and `.git/info/attributes` files to set up the preprocessing by defining a [textconv] for `*.js` and `*.json` files.
+In any git repository, just use `prettier-diff` instead of `git diff`:
+
+```bash
+# instead of
+git diff head^^
+# do this
+prettier-diff head^^
+```
+
+Behind the scenes, `prettier-diff` temporarily modifies the `.git/config` and `.git/info/attributes` files to set up the preprocessing by defining a [textconv] for `*.js` and `*.json` files.
 
 ### `git diff` integration
 
 To always use `prettier-diff` as part of `git diff` in a given repository, you can run the following:
 
-```
+```bash
 git config diff.prettier.textconv prettier-diff
 git config diff.prettier.cachetextconv true
 
