@@ -31,8 +31,7 @@ if (process.env.GIT_PREFIX === undefined) {
 
   try {
     sh`git config diff.prettier.textconv prettier-diff`
-    fse.appendFileSync(gitAttributesPath, '\n*.js diff=prettier\n')
-    fse.appendFileSync(gitAttributesPath, '\n*.json diff=prettier\n')
+    fse.appendFileSync(gitAttributesPath, '\n* diff=prettier\n')
     cp.spawnSync('git', ['diff'].concat(process.argv.slice(2)), {
       stdio: 'inherit'
     })

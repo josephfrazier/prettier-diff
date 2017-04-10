@@ -31,7 +31,7 @@ git diff head^^
 prettier-diff head^^
 ```
 
-Behind the scenes, `prettier-diff` temporarily modifies the `.git/config` and `.git/info/attributes` files to set up the preprocessing by defining a [textconv] for `*.js` and `*.json` files.
+Behind the scenes, `prettier-diff` temporarily modifies the `.git/config` and `.git/info/attributes` files to set up the preprocessing by defining a [textconv] for all files.
 
 ### `git diff` integration
 
