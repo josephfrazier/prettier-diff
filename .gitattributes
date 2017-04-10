@@ -1,3 +1,1 @@
-*.js diff=prettier
-*.json diff=prettier
 prettier-diff diff=prettier

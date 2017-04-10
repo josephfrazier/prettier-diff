@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-const fs = require('fs')
+const fse = require('fs-extra')
+const sh = require('shell-tag')
+const cp = require('child_process')
 const prettier = require('prettier')
 const stringify = require('json-stable-stringify')
 
@@ -13,7 +15,37 @@ const prettierOptions = {
   bracketSpacing: true
 }
 
-const content = fs.readFileSync(process.argv[2]).toString()
+// if run directly, rather than by git,
+// set up git config/attributes then pass args to `git diff`
+if (process.env.GIT_PREFIX === undefined) {
+  const gitDirPath = sh`git rev-parse --git-dir`.trim()
+
+  const gitAttributesPath = gitDirPath + '/info/attributes'
+  fse.closeSync(fse.openSync(gitAttributesPath, 'a')) // ensure attributes file exists
+  const gitAttributesPathBackup = gitAttributesPath + '.prettier-diff'
+  fse.copySync(gitAttributesPath, gitAttributesPathBackup)
+
+  const gitConfigPath = gitDirPath + '/config'
+  const gitConfigPathBackup = gitConfigPath + '.prettier-diff'
+  fse.copySync(gitConfigPath, gitConfigPathBackup)
+
+  try {
+    sh`git config diff.prettier.textconv prettier-diff`
+    fse.appendFileSync(gitAttributesPath, '\n*.js diff=prettier\n')
+    fse.appendFileSync(gitAttributesPath, '\n*.json diff=prettier\n')
+    cp.spawnSync('git', ['diff'].concat(process.argv.slice(2)), {
+      stdio: 'inherit'
+    })
+  } catch (err) {
+    // nothing to do here
+  } finally {
+    fse.renameSync(gitAttributesPathBackup, gitAttributesPath)
+    fse.renameSync(gitConfigPathBackup, gitConfigPath)
+  }
+  process.exit()
+}
+
+const content = fse.readFileSync(process.argv[2]).toString()
 let pretty = content
 
 // try to format JS files

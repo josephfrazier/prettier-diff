@@ -6,8 +6,8 @@ function prettierDiff () {
   first=$(mktemp)
   second=$(mktemp)
 
-  ./prettier-diff $1 > $first
-  ./prettier-diff $2 > $second
+  GIT_PREFIX=fake ./prettier-diff $1 > $first
+  GIT_PREFIX=fake ./prettier-diff $2 > $second
 
   git diff --no-index $first $second || true
 

@@ -16,8 +16,10 @@
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "fs-extra": "^2.1.2",
     "json-stable-stringify": "^1.0.1",
-    "prettier": "^0.22.0"
+    "prettier": "^0.22.0",
+    "shell-tag": "^1.0.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

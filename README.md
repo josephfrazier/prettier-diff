@@ -1,6 +1,6 @@
 # prettier-diff
 
-`prettier-diff` is a `git diff` [textconv] driver that preprocesses JavaScript and JSON files to reduce the number of formatting changes that appear in the diff.
+`prettier-diff` is a `git diff` wrapper that preprocesses JavaScript and JSON files to reduce the number of formatting changes that appear in the diff.
 This allows you to focus on the semantic changes, which is useful when viewing diffs that also have formatting changes.
 
 JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-stable-stringify].
@@ -21,7 +21,13 @@ npm install --global prettier-diff
 
 ## Use
 
-In the git repository that you want to `prettier-diff`, configure the textconv driver and ensure that the `.gitattributes` file associates your files to it:
+### One-off usage
+
+In any git repository, just use `prettier-diff` instead of `git diff`. Behind the scenes, `prettier-diff` temporarily modifies the `.git/config` and `.git/info/attributes` files to set up the preprocessing by defining a [textconv] for `*.js` and `*.json` files.
+
+### `git diff` integration
+
+To always use `prettier-diff` as part of `git diff` in a given repository, you can run the following:
 
 ```
 git config diff.prettier.textconv prettier-diff
