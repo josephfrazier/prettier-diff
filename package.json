@@ -2,9 +2,9 @@
   "name": "prettier-diff",
   "version": "0.0.6",
   "description": "git textconv driver for semantic JavaScript/JSON diffs",
-  "bin": "prettier-diff",
+  "bin": "prettier-diff.js",
   "files": [
-    "prettier-diff"
+    "prettier-diff.js"
   ],
   "scripts": {
     "lint": "eslint prettier-diff",
