@@ -13,7 +13,7 @@ const prettierOptions = {
   bracketSpacing: true
 }
 
-const content = rw.readFileSync(process.argv[2]).toString()
+const content = rw.readFileSync(process.argv[2] || '-').toString()
 let pretty = content
 
 // try to format JS files
