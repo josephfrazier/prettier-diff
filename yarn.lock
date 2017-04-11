@@ -419,7 +419,7 @@ eslint-plugin-standard@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-3.0.1.tgz#34d0c915b45edc6f010393c7eef3823b08565cf2"
 
-eslint@^3.17.0, eslint@^3.19.0:
+eslint@*, eslint@^3.17.0, eslint@^3.19.0:
   version "3.19.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.19.0.tgz#c8fc6201c7f40dd08941b87c085767386a679acc"
   dependencies:
@@ -1094,12 +1094,13 @@ prettier-eslint@^4.3.2:
     pretty-format "^19.0.0"
     require-relative "^0.8.7"
 
-prettier-standard@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/prettier-standard/-/prettier-standard-2.0.2.tgz#2bfd0b6997e74fe475d0b6e165128a43cd2b5dcd"
+prettier-standard@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/prettier-standard/-/prettier-standard-3.0.1.tgz#384cff58b6c244eb91179b5cc9deed26a617a7a3"
   dependencies:
     babel-runtime "^6.23.0"
     chalk "^1.1.3"
+    eslint "*"
     find-up "^2.1.0"
     get-stdin "^5.0.1"
     glob "^7.1.1"
