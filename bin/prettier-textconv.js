@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const fs = require('fs')
+const rw = require('rw').dash
 const prettier = require('prettier')
 const stringify = require('json-stable-stringify')
 
@@ -13,7 +13,7 @@ const prettierOptions = {
   bracketSpacing: true
 }
 
-const content = fs.readFileSync(process.argv[2]).toString()
+const content = rw.readFileSync(process.argv[2]).toString()
 let pretty = content
 
 // try to format JS files
