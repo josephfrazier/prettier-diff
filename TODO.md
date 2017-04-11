@@ -1,5 +1,6 @@
 # TODO
 
+* Figure out if it's possible to support `prettier-diff --no-index`
 * Consider using this prettier fork: https://github.com/arijs/prettier-miscellaneous
   * It's got some extra options that might be nice
 * Make diffing multiple files faster. It's slow in part because the code takes
