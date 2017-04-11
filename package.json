@@ -7,10 +7,10 @@
     "prettier-diff.js"
   ],
   "scripts": {
-    "lint": "eslint prettier-diff",
+    "lint": "eslint prettier-diff.js",
     "pretest": "yarn lint",
     "test": "test/test.sh",
-    "format": "prettier-standard prettier-diff"
+    "format": "prettier-standard prettier-diff.js"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
