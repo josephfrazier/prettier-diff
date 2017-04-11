@@ -26,4 +26,4 @@ assertEmptyPrettierDiff test/js.js test/js.uglified.js
 assertEmptyPrettierDiff test/json.json test/json.uglified.json
 prettierDiff test/1.json test/2.json | containsOnce key1
 prettierDiff test/1.js test/2.js | containsOnce key1
-echo '{}' | bin/prettier-textconv.js - >/dev/null
+echo '{}' | bin/prettier-textconv.js - | wc -c | grep ' 4$' >/dev/null

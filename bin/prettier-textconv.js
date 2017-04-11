@@ -29,7 +29,7 @@ try {
   })
   // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
   // `null` at the end of a line. See the grammar at http://json.org/
-  pretty = sorted.replace(/(["\d}\]el])$/gm, '$1,')
+  pretty = sorted.replace(/(.["\d}\]el])$/gm, '$1,')
 } catch (err) {}
 
 console.log(pretty)
