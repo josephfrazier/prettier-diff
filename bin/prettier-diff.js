@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fse = require('fs-extra')
+const path = require('path')
 const sh = require('shell-tag')
 const cp = require('child_process')
 
@@ -17,7 +18,7 @@ const gitConfigPathBackup = gitConfigPath + '.prettier-diff'
 fse.copySync(gitConfigPath, gitConfigPathBackup)
 
 try {
-  sh`git config diff.prettier.textconv prettier-textconv`
+  sh`git config diff.prettier.textconv ${path.resolve(__dirname, 'prettier-textconv.js')}`
   fse.appendFileSync(gitAttributesPath, '\n* diff=prettier\n')
   cp.spawnSync('git', ['diff'].concat(process.argv.slice(2)), {
     stdio: 'inherit'
