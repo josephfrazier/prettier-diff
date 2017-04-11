@@ -2,15 +2,18 @@
   "name": "prettier-diff",
   "version": "0.0.7",
   "description": "`git diff` wrapper for semantic JavaScript/JSON diffs",
-  "bin": "bin/prettier-diff.js",
+  "bin": {
+    "prettier-diff": "bin/prettier-diff.js",
+    "prettier-textconv": "bin/prettier-textconv.js"
+  },
   "files": [
-    "bin/prettier-diff.js"
+    "bin/"
   ],
   "scripts": {
-    "lint": "eslint bin/prettier-diff.js",
+    "lint": "eslint bin/*.js",
     "pretest": "yarn lint",
     "test": "test/test.sh",
-    "format": "prettier-standard bin/prettier-diff.js"
+    "format": "prettier-standard bin/*.js"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
