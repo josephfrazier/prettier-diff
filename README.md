@@ -57,7 +57,7 @@ See here for more information: [textconv]
 
 For example, this repository contains a large commit that rewrote most of its code with [prettier-standard], and also renames a variable. You can see the commit on GitHub here: [8cc0119]
 
-With `prettier-diff` configured, only the renaming is shown:
+With `prettier-diff`, only the renaming is shown:
 
 ```bash
 prettier-diff 8cc0119^ 8cc0119 --color | diff-so-fancy
