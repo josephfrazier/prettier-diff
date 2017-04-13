@@ -44,7 +44,8 @@ if (process.env.GIT_PREFIX === undefined) {
     tabWidth: 2,
     singleQuote: true,
     trailingComma: 'all',
-    bracketSpacing: true
+    bracketSpacing: true,
+    semi: false
   }
 
   const content = rw.readFileSync(args[0] || '-').toString()
