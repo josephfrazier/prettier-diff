@@ -1,5 +1,10 @@
 # TODO
 
+* Improve JSON formatting
+  * See https://github.com/prettier/prettier/issues/322
+  * Maybe run one of these after json-stable-stringify?
+    * https://www.npmjs.com/package/json-align
+    * https://www.npmjs.com/package/json-stringify-pretty-compact
 * Ignore files marked as binary in .gitattributes
   * Example: https://github.com/josephfrazier/octopermalinker
   * `prettier-diff 3fec497b4675f22c417a95f4b7947e06ed7b9179^ 3fec497b4675f22c417a95f4b7947e06ed7b9179`
