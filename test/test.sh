@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+./node_modules/.bin/prettier_d restart >/dev/null
+
 function textconv () {
-  GIT_PREFIX=fake bin/prettier-diff.js $1
+  bin/textconv-prettier.sh $1
 }
 
 # I had some trouble getting `git diff` to use the textconv, so just emulate it with tempfiles.
@@ -31,4 +33,4 @@ assertEmptyPrettierDiff test/json.json test/json.uglified.json
 assertEmptyPrettierDiff test/xregexp.js test/xregexp.uglified.js
 prettierDiff test/1.json test/2.json | containsOnce key1
 prettierDiff test/1.js test/2.js | containsOnce key1
-echo '{"k": 2}' | textconv - | wc -c | grep ' 15$' >/dev/null
+textconv test/k2.json | wc -c | grep ' 14$' >/dev/null

@@ -39,8 +39,7 @@ Behind the scenes, `prettier-diff` temporarily modifies the `.git/config` and `.
 To always use `prettier-diff` as part of `git diff` in a given repository, you can run the following:
 
 ```bash
-git config diff.prettier.textconv prettier-diff
-git config diff.prettier.cachetextconv true
+git config diff.prettier.textconv textconv-prettier
 
 echo '*.js diff=prettier' >> .gitattributes
 echo '*.json diff=prettier' >> .gitattributes
