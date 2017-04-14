@@ -13,6 +13,7 @@ if (process.env.GIT_PREFIX === undefined) {
   const gitDirPath = sh`git rev-parse --git-dir`.trim()
 
   const gitAttributesPath = gitDirPath + '/info/attributes'
+  const dotGitAttributesPath = gitDirPath + '/../.gitattributes'
   fse.closeSync(fse.openSync(gitAttributesPath, 'a')) // ensure attributes file exists
   const gitAttributesPathBackup = gitAttributesPath + '.prettier-diff'
   fse.copySync(gitAttributesPath, gitAttributesPathBackup)
@@ -23,7 +24,13 @@ if (process.env.GIT_PREFIX === undefined) {
 
   try {
     sh`git config diff.prettier.textconv ${textconvPath}`
-    fse.appendFileSync(gitAttributesPath, '\n* diff=prettier\n')
+    const dotGitAttributesContent = fse.existsSync(dotGitAttributesPath)
+      ? fse.readFileSync(dotGitAttributesPath).toString()
+      : ''
+    fse.appendFileSync(
+      gitAttributesPath,
+      `* diff=prettier\n${dotGitAttributesContent}`
+    )
     cp.spawnSync('git', ['diff'].concat(args), {
       stdio: 'inherit'
     })

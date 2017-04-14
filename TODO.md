@@ -1,8 +1,5 @@
 # TODO
 
-* Ignore files marked as binary in .gitattributes
-  * Example: https://github.com/josephfrazier/octopermalinker
-  * `prettier-diff 3fec497b4675f22c417a95f4b7947e06ed7b9179^ 3fec497b4675f22c417a95f4b7947e06ed7b9179`
 * Figure out if it's possible to support `prettier-diff --no-index`
 * Consider using this prettier fork: https://github.com/arijs/prettier-miscellaneous
   * It's got some extra options that might be nice
