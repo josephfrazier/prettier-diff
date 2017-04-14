@@ -36,7 +36,8 @@ if (process.env.GIT_PREFIX === undefined) {
 } else {
   const rw = require('rw').dash
   const prettier = require('prettier')
-  const stringify = require('json-stable-stringify')
+  const stringifySorted = require('json-stable-stringify')
+  const stringifyAligned = require('json-align')
 
   // https://github.com/prettier/prettier/tree/a707dda53b13a6956a825609f30baead7ef08a59#api
   const prettierOptions = {
@@ -59,9 +60,12 @@ if (process.env.GIT_PREFIX === undefined) {
   // try to format JSON files
   // prettier doesn't do this currently: https://github.com/prettier/prettier/issues/322
   try {
-    const sorted = stringify(JSON.parse(content), {
-      space: prettierOptions.tabWidth
-    })
+    const sorted = stringifyAligned(
+      JSON.parse(stringifySorted(JSON.parse(content))),
+      null,
+      prettierOptions.tabWidth,
+      true
+    )
     // Put a comma after strings, numbers, objects, arrays, `true`, `false`, or
     // `null` at the end of a line. See the grammar at http://json.org/
     pretty = sorted.replace(/(.["\d}\]el])$/gm, '$1,')
