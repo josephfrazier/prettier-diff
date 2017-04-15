@@ -31,9 +31,13 @@ if (process.env.GIT_PREFIX === undefined) {
       gitAttributesPath,
       `* diff=prettier\n${dotGitAttributesContent}`
     )
-    cp.spawnSync('git', ['diff', '--ignore-space-change'].concat(args), {
-      stdio: 'inherit'
-    })
+    cp.spawnSync(
+      'git',
+      ['diff', '--ignore-space-change', '--ignore-blank-lines'].concat(args),
+      {
+        stdio: 'inherit'
+      }
+    )
   } catch (err) {
     // nothing to do here
   } finally {
