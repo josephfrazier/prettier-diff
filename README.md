@@ -3,10 +3,11 @@
 `prettier-diff` is a `git diff` wrapper that preprocesses JavaScript and JSON files to reduce the number of formatting changes that appear in the diff.
 This allows you to focus on the semantic changes, which is useful when viewing diffs that also have formatting changes.
 
-JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-stable-stringify].
+JavaScript is preprocessed with [prettier], and JSON is preprocessed with [json-stable-stringify] and [json-align].
 
 [prettier]: https://github.com/prettier/prettier
 [json-stable-stringify]: https://github.com/substack/json-stable-stringify
+[json-align]: https://github.com/nylen/node-json-align
 
 ## Installation
 
