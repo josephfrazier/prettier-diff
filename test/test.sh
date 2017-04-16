@@ -31,4 +31,4 @@ assertEmptyPrettierDiff test/json.json test/json.uglified.json
 assertEmptyPrettierDiff test/xregexp.js test/xregexp.uglified.js
 prettierDiff test/1.json test/2.json | containsOnce key1
 prettierDiff test/1.js test/2.js | containsOnce key1
-echo '{}' | textconv - | wc -c | grep ' 4$' >/dev/null
+echo '{"k": 2}' | textconv - | wc -c | grep ' 15$' >/dev/null
