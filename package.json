@@ -6,7 +6,7 @@
     "prettier-diff": "bin/prettier-diff.js"
   },
   "files": [
-    "bin/"
+    "bin/**"
   ],
   "scripts": {
     "lint": "eslint bin/*.js",
