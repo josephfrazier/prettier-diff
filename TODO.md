@@ -1,5 +1,6 @@
 # TODO
 
+* Add `--install` and `--uninstall` options for setting up git config/attributes
 * Have `prettier-diff` stop `prettier_d` after running?
   * Also think about scoping this `prettier_d` non-globally
 * Support git-integrated usage without having to run `prettier-diff` first
