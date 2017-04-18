@@ -1176,9 +1176,9 @@ prettier@^0.22.0:
     jest-validate "19.0.0"
     minimist "1.2.0"
 
-prettier@^1.1.0:
+"prettier@https://github.com/prettier/prettier":
   version "1.1.0"
-  resolved "https://github.com/josephfrazier/prettier#c2bbe6de495098e9d638fe29b09283c35f92bed9"
+  resolved "https://github.com/prettier/prettier#8d03423d17ffe4190a0b5207433e87e7a3d7b2d4"
   dependencies:
     ast-types "0.9.8"
     babel-code-frame "6.22.0"
@@ -1191,9 +1191,9 @@ prettier@^1.1.0:
     jest-validate "19.0.0"
     minimist "1.2.0"
 
-"prettier_d@https://github.com/josephfrazier/prettier_d.js#2c3bcc5973759fa768b3d67de4fb689adb6313d8":
-  version "5.0.3"
-  resolved "https://github.com/josephfrazier/prettier_d.js#2c3bcc5973759fa768b3d67de4fb689adb6313d8"
+"prettier_d@https://github.com/josephfrazier/prettier_d.js":
+  version "5.1.0"
+  resolved "https://github.com/josephfrazier/prettier_d.js#4bd5c2794e9202ca5dafb1e70d9a4ccd0756f222"
   dependencies:
     camelcase-keys "^4.1.0"
     chalk "^1.1.1"
@@ -1201,7 +1201,7 @@ prettier@^1.1.0:
     json-stable-stringify "^1.0.1"
     minimist "^1.2.0"
     optionator "^0.8.1"
-    prettier "^1.1.0"
+    prettier "https://github.com/prettier/prettier"
     resolve "^1.1.7"
     supports-color "^3.1.2"
     unquote "^1.1.0"
