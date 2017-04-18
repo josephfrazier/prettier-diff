@@ -4,7 +4,7 @@ const os = require('os')
 const path = require('path')
 const fse = require('fs-extra')
 const sh = require('shell-tag')
-const stableSort = require('stable')
+const fugitSort = require('fugit')
 const cp = require('child_process')
 
 const args = process.argv.slice(2)
@@ -44,19 +44,12 @@ try {
     `* diff=prettier\n${dotGitAttributesContent}`
   )
 
-  const sortedArgs = stableSort(
-    args,
-    (a, b) => !a.startsWith('-') && b.startsWith('-')
+  const sortedArgs = fugitSort(
+    ['diff', '--ignore-space-change', '--ignore-blank-lines'].concat(args)
   )
-  cp.spawnSync(
-    'git',
-    ['diff', '--ignore-space-change', '--ignore-blank-lines'].concat(
-      sortedArgs
-    ),
-    {
-      stdio: 'inherit'
-    }
-  )
+  cp.spawnSync('git', sortedArgs, {
+    stdio: 'inherit'
+  })
 } catch (err) {
   // nothing to do here
 } finally {
