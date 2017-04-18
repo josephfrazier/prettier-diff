@@ -1176,7 +1176,7 @@ prettier@^0.22.0:
     jest-validate "19.0.0"
     minimist "1.2.0"
 
-prettier@^1.1.0, "prettier@https://github.com/josephfrazier/prettier#template-comment-bug":
+prettier@^1.1.0:
   version "1.1.0"
   resolved "https://github.com/josephfrazier/prettier#c2bbe6de495098e9d638fe29b09283c35f92bed9"
   dependencies:
