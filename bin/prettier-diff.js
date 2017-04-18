@@ -48,7 +48,7 @@ try {
     ['diff', '--ignore-space-change', '--ignore-blank-lines'].concat(args)
   )
   cp.spawnSync('git', sortedArgs, {
-    stdio: 'inherit'
+    stdio: 'inherit',
   })
 } catch (err) {
   // nothing to do here
