@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-./node_modules/.bin/prettier_d restart >/dev/null
+./node_modules/.bin/prettier_d stop >/dev/null
+./node_modules/.bin/prettier_d start >/dev/null
 
 function textconv () {
   bin/textconv-prettier.sh $1
