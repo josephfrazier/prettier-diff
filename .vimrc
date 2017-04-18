@@ -1,4 +1,4 @@
-autocmd FileType javascript set formatprg=../node_modules/.bin/prettier_d\ --stdin\ --no-semi\ --single-quote
+autocmd FileType javascript set formatprg=../node_modules/.bin/prettier_d\ --stdin\ --no-semi\ --single-quote\ --trailing-comma\ es5
 autocmd BufWritePre */bin/*.js Neoformat
 
 " Use formatprg when available
