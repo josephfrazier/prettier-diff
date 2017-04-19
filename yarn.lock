@@ -1192,8 +1192,8 @@ prettier@^0.22.0:
     minimist "1.2.0"
 
 "prettier_d@https://github.com/josephfrazier/prettier_d.js":
-  version "5.1.0"
-  resolved "https://github.com/josephfrazier/prettier_d.js#4bd5c2794e9202ca5dafb1e70d9a4ccd0756f222"
+  version "5.2.0"
+  resolved "https://github.com/josephfrazier/prettier_d.js#440a4e5f608046cfec6292cf557aa47082e965b8"
   dependencies:
     camelcase-keys "^4.1.0"
     chalk "^1.1.1"
