@@ -12,8 +12,7 @@
   "scripts": {
     "lint": "eslint bin/*.js",
     "pretest": "yarn lint",
-    "test": "test/test.sh",
-    "format": "prettier-standard bin/*.js"
+    "test": "test/test.sh"
   },
   "repository": "https://github.com/josephfrazier/prettier-diff.git",
   "author": "Joseph Frazier <1212jtraceur@gmail.com>",
@@ -34,7 +33,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "prettier-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1"
   }
 }
