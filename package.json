@@ -28,6 +28,7 @@
   "dependencies": {
     "fs-extra": "^4.0.1",
     "fugit": "^1.1.0",
+    "is-port-reachable": "^2.0.0",
     "json-align": "^0.1.0",
     "json-stable-stringify": "^1.0.1",
     "prettier_d": "https://github.com/josephfrazier/prettier_d.js",
