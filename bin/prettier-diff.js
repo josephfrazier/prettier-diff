@@ -6,6 +6,7 @@ const fse = require('fs-extra')
 const sh = require('shell-tag')
 const fugitSort = require('fugit')
 const cp = require('child_process')
+const isPortReachable = require('is-port-reachable')
 
 const args = process.argv.slice(2)
 
@@ -23,36 +24,51 @@ const gitConfigPathBackup = gitConfigPath + '.prettier-diff'
 fse.copySync(gitConfigPath, gitConfigPathBackup)
 
 const prettierdDotfilePath = path.resolve(os.homedir(), '.prettier_d')
-if (!fse.existsSync(prettierdDotfilePath)) {
-  const prettierdPath = path.resolve(
-    __dirname,
-    '..',
-    'node_modules',
-    '.bin',
-    'prettier_d'
-  )
-  sh`${prettierdPath} start`
-}
+isPrettierdReachable(prettierdDotfilePath).then(reachable => {
+  if (!reachable) {
+    const prettierdPath = path.resolve(
+      __dirname,
+      '..',
+      'node_modules',
+      '.bin',
+      'prettier_d'
+    )
+    sh`${prettierdPath} start`
+  }
 
-try {
-  sh`git config diff.prettier.textconv ${textconvPath}`
-  const dotGitAttributesContent = fse.existsSync(dotGitAttributesPath)
-    ? fse.readFileSync(dotGitAttributesPath).toString()
-    : ''
-  fse.appendFileSync(
-    gitAttributesPath,
-    `* diff=prettier\n${dotGitAttributesContent}`
-  )
+  try {
+    sh`git config diff.prettier.textconv ${textconvPath}`
+    const dotGitAttributesContent = fse.existsSync(dotGitAttributesPath)
+      ? fse.readFileSync(dotGitAttributesPath).toString()
+      : ''
+    fse.appendFileSync(
+      gitAttributesPath,
+      `* diff=prettier\n${dotGitAttributesContent}`
+    )
 
-  const sortedArgs = fugitSort(
-    ['diff', '--ignore-space-change', '--ignore-blank-lines'].concat(args)
+    const sortedArgs = fugitSort(
+      ['diff', '--ignore-space-change', '--ignore-blank-lines'].concat(args)
+    )
+    cp.spawnSync('git', sortedArgs, {
+      stdio: 'inherit',
+    })
+  } catch (err) {
+    // nothing to do here
+  } finally {
+    fse.renameSync(gitAttributesPathBackup, gitAttributesPath)
+    fse.renameSync(gitConfigPathBackup, gitConfigPath)
+  }
+})
+
+function isPrettierdReachable(prettierdDotfilePath) {
+  return Promise.resolve(
+    fse.existsSync(prettierdDotfilePath) &&
+      isPortReachable(
+        Number.parseInt(
+          fse
+            .readFileSync(prettierdDotfilePath, { encoding: 'utf8' })
+            .split(' ')[0]
+        )
+      )
   )
-  cp.spawnSync('git', sortedArgs, {
-    stdio: 'inherit',
-  })
-} catch (err) {
-  // nothing to do here
-} finally {
-  fse.renameSync(gitAttributesPathBackup, gitAttributesPath)
-  fse.renameSync(gitConfigPathBackup, gitConfigPath)
 }
