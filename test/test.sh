@@ -29,6 +29,13 @@ function containsOnce () {
   cat | grep "$1" | wc -l | grep '\<1$' >/dev/null
 }
 
+# Ensure that running prettier-diff restarts the prettier_d process if it was killed.
+# If it doesn't, the subsequent tests will fail.
+# https://github.com/josephfrazier/prettier-diff/issues/1
+PORT=`cat ~/.prettier_d | cut -d" " -f1` # taken from textconv-prettier.sh
+fuser -k $PORT/tcp # https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux/11596144#11596144
+./bin/prettier-diff.js
+
 assertEmptyPrettierDiff test/js.js test/js.uglified.js
 assertEmptyPrettierDiff test/json.json test/json.uglified.json
 assertEmptyPrettierDiff test/xregexp.js test/xregexp.uglified.js
