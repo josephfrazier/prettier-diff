@@ -62,7 +62,7 @@ isPrettierdReachable(prettierdDotfilePath).then(reachable => {
 
 function isPrettierdReachable(prettierdDotfilePath) {
   return fse
-    .readFile(prettierdDotfilePath)
+    .readFile(prettierdDotfilePath, 'utf8')
     .then(contents => contents.split(' '))
     .then(([port, token]) => port)
     .then(isPortReachable)
