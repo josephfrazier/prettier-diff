@@ -61,14 +61,10 @@ isPrettierdReachable(prettierdDotfilePath).then(reachable => {
 })
 
 function isPrettierdReachable(prettierdDotfilePath) {
-  return Promise.resolve(
-    fse.existsSync(prettierdDotfilePath) &&
-      isPortReachable(
-        Number.parseInt(
-          fse
-            .readFileSync(prettierdDotfilePath, { encoding: 'utf8' })
-            .split(' ')[0]
-        )
-      )
-  )
+  return fse
+    .readFile(prettierdDotfilePath)
+    .then(contents => contents.split(' '))
+    .then(([port, token]) => port)
+    .then(isPortReachable)
+    .catch(_ => false)
 }
