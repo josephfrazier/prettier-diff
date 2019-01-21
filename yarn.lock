@@ -922,9 +922,9 @@ prettier@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.5.3.tgz#59dadc683345ec6b88f88b94ed4ae7e1da394bfe"
 
-"prettier_d@https://github.com/josephfrazier/prettier_d.js":
-  version "5.7.3"
-  resolved "https://github.com/josephfrazier/prettier_d.js#97db77919c37d5c8c7a4405c30bb3e7dd0262d8a"
+prettier_d@5.7.4:
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/prettier_d/-/prettier_d-5.7.4.tgz#750c30dd5a6334bfe9bbf39f9b3eb56c430add3e"
   dependencies:
     camelcase-keys "^4.1.0"
     chalk "^2.1.0"
