@@ -31,7 +31,7 @@
     "is-port-reachable": "^2.0.0",
     "json-align": "^0.1.0",
     "json-stable-stringify": "^1.0.1",
-    "prettier_d": "https://github.com/josephfrazier/prettier_d.js",
+    "prettier_d": "5.7.4",
     "rw": "^1.3.3",
     "shell-tag": "^1.0.1",
     "stable": "^0.1.6"
