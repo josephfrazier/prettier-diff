@@ -1,6 +1,6 @@
 {
   "name": "prettier-diff",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "`git diff` wrapper for semantic JavaScript/JSON diffs",
   "bin": {
     "prettier-diff": "bin/prettier-diff.js",
